@@ -8,7 +8,7 @@ public class DivideTwoIntegers_Failed {
 		if(a == b) return 1;	
 		
 		//
-		if(a == 0) return 0;
+//		if(a == 0) return 0;
 		if(b == 1) return a;
 		if(b == -1) return -a;
 		
@@ -18,8 +18,11 @@ public class DivideTwoIntegers_Failed {
 		if(a == Integer.MIN_VALUE && b == Integer.MAX_VALUE) 
 			return -1;
 		
-		if(a == Integer.MIN_VALUE && b != Integer.MAX_VALUE) 
-			a = a+1;
+		int minBoundWatcher = 0;
+		if(a == Integer.MIN_VALUE && b != Integer.MAX_VALUE) {
+			a = a+b;
+			minBoundWatcher = 1;
+		}
 
 		
 		//-----normal cases
@@ -33,9 +36,9 @@ public class DivideTwoIntegers_Failed {
 		if(a < b) return 0;
 		int c = divide_helper(a,b);
 		if(sign_a != sign_b)
-			return -c;
+			return -c + minBoundWatcher;
 		else 
-			return c;
+			return c + minBoundWatcher;
 	}
 	public int divide_helper(int a, int b){
 		if(a < b) return 0;
