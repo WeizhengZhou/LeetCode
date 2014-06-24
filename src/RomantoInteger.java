@@ -6,10 +6,9 @@
  */
 public class RomantoInteger {
 	char[] one = new char[]{'I','X','C','M'};
-	char[] five = new char[]{'V','L','D'};
+	char[] five = new char[]{'V','L','D',' '};
 	private int res = 0;
-	public int romanToInt(String s) {
-		
+	public int romanToInt(String s) {	
 		int end = s.length();
 		int d = 0;
 		while(end > 0){
@@ -22,10 +21,9 @@ public class RomantoInteger {
 			end = start;
 		}
 		return res;
-		
 	}
 	private int aux(String s, int d){
-		System.out.println("s = " + s);
+		System.out.println("s = " + s + ", d = " + d);
 		int x = 0;
 		String one = "" + this.one[d];
 		String five = "" + this.five[d];
@@ -52,7 +50,7 @@ public class RomantoInteger {
 			
 	}
 	public static void main(String[] args){
-		String s = "LXV";
+		String s = "MMMDCCLIX";
 		RomantoInteger solu = new RomantoInteger();
 		System.out.println(solu.romanToInt(s));
 		

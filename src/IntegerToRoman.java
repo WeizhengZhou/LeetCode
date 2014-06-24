@@ -56,7 +56,7 @@ public class IntegerToRoman {
 		}
 	}	
 	public static void main(String[] args){
-		int num = 1234;
+		int num = 3759;
 		IntegerToRoman s = new IntegerToRoman();
 		System.out.println(s.intToRoman(num));
 		
