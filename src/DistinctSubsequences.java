@@ -10,37 +10,37 @@ public class DistinctSubsequences {
 		//number of distinct T[0...j] can be found in S[0...i] 
 		int[][] L = new int[m+1][n+1];
 		
-		//empty T can be found in each S[0,m]
-		for(int i=0;i<m;i++)
-			L[i][0] = 1;	
+		L[0][0] = 1;
+		//T[0,0] can be found in S[0,i]
+		for(int i=1;i<m+1;i++)
+			L[i][0] = 1;
+		//T[0,j] cannot be found S[0,0]
+		for(int j=1;j<n+1;j++)
+			L[0][j] = 0;
 		
-		//fill the array
 		for(int i=1;i<m+1;i++){
-			for(int j=1;j<=Math.min(n,i);j++){
-				//find subsequence T[0...j-1] in S[0...i-1]
-				System.out.println("i = " + i + ", j = " + j);
-				//count number of continuous T[j-1]'s occurrence in S
-				int count = 0;
-				while(i-1-count >=0  && T.charAt(j-1) == S.charAt(i-1 -count))
-					count++;
-				//if T.charAt(j-1) != S.charAt(i-1), find previous occurrence of T[j-1]
-				if(count == 0)
+			for(int j=1;j<n+1;j++){
+//				System.out.println("i = " + i + ", j = " + j);				
+				if( S.charAt(i-1) == T.charAt(j-1)){
+					//we can choose to match i-1 with j or match i with j
+					L[i][j] = L[i-1][j] + L[i-1][j-1];
+				}
+				else{
 					L[i][j] = L[i-1][j];
-				else{//multiply T[0...j-2]'s occurrence with T[j-1]'s occurrence 					
-					L[i][j] = L[i-count][j-1] * count;
 				}							
 			}
 		}
-		print(L);
+//		print(L);
 		return L[m][n];
 	}
 	public static void main(String[] args){
-//		String S = "rabbbit";
-//		String T = 	"rabit";
-		String S = "ddd";
-		String T = "dd";
+		String S = "rabbitt";
+		String T = 	"rabit";
+//		String S = "ddd";
+//		String T = "dd";
 		DistinctSubsequences solution = new DistinctSubsequences();
-		System.out.println(solution.numDistinct(S, T));	
+		solution.numDistinct(S, T);
+//		System.out.println(solution.numDistinct(S, T));	
 	}
 	private void print(int[][] L){
 		for(int[] row:L){
