@@ -1,5 +1,13 @@
 
 public class SortList {
+	public class HeadTail{
+		ListNode head = null;
+		ListNode tail = null;
+		public HeadTail(ListNode head, ListNode tail){
+			this.head = head;
+			this.tail = tail;
+		}
+	}
 	 public ListNode sortList(ListNode head){
 		 if(head == null || head.next == null) return head;
 		 ListNode dummyHead = new ListNode(0);
@@ -10,14 +18,17 @@ public class SortList {
 		 
 		 while(curLength < totalLength){
 			 ListNode preL = dummyHead;
-			 while(preL != null){
+			 while(preL.next != null){
 				 ListNode l = preL.next;
 				 ListNode r = l;
+				 
 				 int count = 0;
 				 while(r.next != null && count < curLength){
 					 count++;
 					 r = r.next;
 				 }	
+				 ListNode aftR = r.next;
+				 
 				 if(l == r) 
 					 break;	
 				 if(preL == dummyHead && r.next == null)
@@ -25,6 +36,7 @@ public class SortList {
 				 
 				 System.out.println("A, curLength = " + curLength);
 				 System.out.println("l = " + l.val + ", r = " + r.val);
+				 
 				 ListNode th = new ListNode(0);//temp head
 				 ListNode tt = th;//temp tail
 				 int countL = 0;
@@ -66,9 +78,15 @@ public class SortList {
 				 System.out.println("C, curLength = " + curLength);
 
 				 preL.next = th.next;
+				 tt.next = aftR;
 				 preL = tt;
+				 
+		 
+				 System.out.println("D, " + tt.val);
+//				 System.out.println("E, " + tt.next.val);
 			 }
-			 System.out.println(curLength);
+			 System.out.println("---");
+			 print(head);
 			 curLength = curLength * 2;			 
 		 }
 		 return dummyHead.next;
@@ -84,7 +102,8 @@ public class SortList {
 	
 	public static void main(String[] args){
 //		int[] A = new int[]{1,3,3,1,3,1,3,3,2,3,2,2,1,1,1,3,2,2,1,1,2,2,2,3,3,1,1,2,2,2,1,2,1,1,2,3,3,2,2,3,2,3,2,2,2,1,1,3,2,3,3,1,1,1,2,2,1,2,2,2,2,3,1,3,1,1,1,2,1,2,2,2,1,3,2,2,2,3,3,2,3,3,1,1,2,2,1,2,1,3,2,1,3,3,1,2,1,1,1,1,1,2,1,2,2,2,2,3,3,3,1,1,3,2,1,1,2,1,3,3,2,2,1,3,1,3,1,3,2,2,3,2,3,2,2,1,2,3,1,3,1,2,3,3,2,3,3,3,1,1,2,3,1,2,3,2,1,1,2,3,1,1,3,1,2,2,3,2,1,3,1,2,1,3,2,1,1,2,2,2,1,3,1,3,2,3,3,1,1,3,1,2,1,2,3,1,2,1,1,3,1,3,3,1,1,1,2,2,1,3,1,2,2,3,2,1,3,2,1,3,2,2,3,3,2,2,1,3,2,2,2,2,2,3,2,2,3,1,3,2,1,3,2,1,2,3,3,3,1,2,2,3,1,1,2,2,3,2,1,1,1,1,1,3,2,2,2,1,3,2,1,2,3,2,1,1,2,1,3,3,1,3,1,2,2,1,2,3,2,3,3,1,2,3,2,2,3,3,2,1,3,2,2,2,3,3,3,1,1,2,1,1,2,3,3,3,1,3,2,2,1,2,2,1,2,3,1,3,2,2,3,3,3,1,2,3,2,1,3,1,1,2,2,1,1,1,2,2,3,1,3,1,2,3,3,3,2,2,3,1,1,1,3,2,1,1,3,1,2,3,3,3,2,1,2,3,2,3,2,1,3,2,2,2,2,1,1,3,1,1,1,3,2,2,2,1,2,3,2,3,2,2,1,2,3,2,1,1,3,1,3,3,1,1,1,1,1,2,3,3,3,1,3,2,2,3,1,1,3,1,1,1,3,1,1,2,2,2,1,1,1,1,2,1,3,3,3,1,2,2,2,2,3,3,1,2,2,3,1,3,1,2,1,2,2,3,3,1,3,3,2,1,3,1,1,3,1,2,3,3,3,3,1,1,3,3,3,3,2,2,2,1,1,3,2,2,2,3,1,3,3,3,1,1,3,1,3,2,3,1,2,3,2,2,3,3,3,1,2,1,2,1,2,3,1,2,2,2,1,1,1,2,2,1,2,1,1,1,3,2,1,2,3,2,2,2,1,2,3,2,2,1,3,3,3,1,2,3,3,1,1,3,3,1,1,2,1};
-		int[] A = new int[]{3,1,2};
+//		int[] A = new int[]{3,1,2};
+		int[] A = new int[]{6,5,4,3,2,1};
 		ListNode head = new ListNode().createList(A);
 		
 		SortList sortList = new SortList();

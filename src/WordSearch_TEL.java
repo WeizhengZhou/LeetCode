@@ -18,7 +18,8 @@ public class WordSearch_TEL {
 		if(m*n < word.length) return false;
 			
 		for(int i=0;i<m;i++){
-			for(int j=0;j<n;j++){		
+			for(int j=0;j<n;j++){	
+				System.out.println("start at i = " + i + ", j = "+ j);
 			   if(dfs(0, i, j) == true)
 				   return true;
 			}
