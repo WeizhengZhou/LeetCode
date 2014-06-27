@@ -5,50 +5,44 @@
  *
  */
 public class RomantoInteger {
-	char[] one = new char[]{'I','X','C','M'};
-	char[] five = new char[]{'V','L','D',' '};
-	private int res = 0;
-	public int romanToInt(String s) {	
-		int end = s.length();
-		int d = 0;
-		while(end > 0){
-			int start = end ;		
-			while(start >= 1 && (s.charAt(start-1) == one[d] || s.charAt(start-1) == five[d]))
-				start--;
-			res += aux(s.substring(start,end), d);
-			d++;
-//			System.out.println(start);
-			end = start;
+	
+	public int romanToInt(String s) {
+		if(s == null) return 0;
+		int i = s.length()-1;
+		int res = 0;
+		while(i >= 0){
+			int cur = charToNum(s.charAt(i));
+			if(i == 0) {				
+				res += cur;
+				return res;
+			}
+			else{
+				int pre = charToNum(s.charAt(i-1));
+				if(pre >= cur){//previous >= current I,II,III,V,VI,VII,VIII
+					res += cur;
+					i--;
+				}
+				else{
+					res = res + cur - pre;//IV, IX
+					i=i-2;
+				}				
+			}		
 		}
-		return res;
+		return res;			
 	}
-	private int aux(String s, int d){
-		System.out.println("s = " + s + ", d = " + d);
-		int x = 0;
-		String one = "" + this.one[d];
-		String five = "" + this.five[d];
-		if(s.equals(one))
-			x = 1;
-		else if(s.equals(one+one))
-			x = 2;
-		else if(s.equals(one+one+one))
-			x = 3;
-		else if(s.equals(one+five))
-			x = 4;
-		else if(s.equals(five))
-			x = 5;
-		else if(s.equals(five+one))
-			x = 6;
-		else if(s.equals(five+one+one))
-			x = 7;
-		else if(s.equals(five+one+one+one))
-			x = 8;
-		else if(s.equals(one + "" + this.one[d+1]))
-			x = 9;
-		
-		return x * (int) Math.pow(10, d);
-			
+	private int charToNum(char c){
+		switch(c){
+		case 'I': return 1;
+		case 'V': return 5;
+		case 'X': return 10;
+		case 'L': return 50;
+		case 'C': return 100;
+		case 'D': return 500;
+		case 'M': return 1000;
+		default: return 0;
+		}	
 	}
+	
 	public static void main(String[] args){
 		String s = "MMMDCCLIX";
 		RomantoInteger solu = new RomantoInteger();
