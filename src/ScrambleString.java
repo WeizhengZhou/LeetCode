@@ -1,44 +1,67 @@
-import java.util.*;
+/**
+ * O(n^4) dynamic programming solution 
+ * @see http://blog.sina.com.cn/s/blog_b9285de20101gy6n.html
+ * @author Weizheng
+ *
+ */
 public class ScrambleString {
-	private String s1 = null;
-	private String s2 = null;
+
 	public boolean isScramble(String s1, String s2) {
-		if(s1 == null || s2 == null || s1.length() != s2.length())
-			return false;
-		this.s1 = s1;
-		this.s2 = s2;
-		return aux(0, s1.length(), 0, s2.length());
-
-	}
-	private boolean aux(int l1, int r1, int l2, int r2){
-		int n1 = r1 - l1;
-		int n2 = r2 - l2;
-		
-		if(n1 != n2) return false;
-		if(l1 > r1) return true;
-		
-		if(s1.substring(l1,r1).equals(s2.substring(l2,r2))) return true;
-		
-		int m1 = (l1+r1)/2;
-		int m2 = (l2+r2)/2;
-		
-		char[] c1 = s1.substring(l1,m1).toCharArray();
-		char[] c2l = s2.substring(l2,m2).toCharArray();
-		char[] c2r = s2.substring(r2-n2/2,r2).toCharArray();
-		Arrays.sort(c1);	
-		Arrays.sort(c2l);
-		Arrays.sort(c2r);
-		String t1 = new String(c1);
-		String t2l = new String(c2l);
-		String t2r = new String(c2r);
-		
-		if(t1.equals(t2l)){
-			return aux(l1,m1, l2, m2) && aux(r1-n1/2,r1, r2-n2/2, r2);
+		if(s1 == null || s2 == null) return false;
+		if(s1.length() != s2.length()) return false;
+	
+		int n = s1.length();
+		//dp[i][j][l] represents whether s1.sub(i,i+l) is a scramble string of s2.sub(j,j+l)
+		boolean[][][] dp = new boolean[n][n][n+1];
+		for(int l=1;l<=n;l++){//length = 1 to n
+			for(int i=0;i<=n-l;i++){//i from 0 to n-length
+				for(int j=0;j<=n-l;j++){//j from 0 to n-length
+					if(s1.substring(i,i+l).equals(s2.substring(j,j+l)))//identical
+						dp[i][j][l] = true;
+					else{
+						for(int k=1;k<l;k++){
+							//s1.sub(i,i+l) = s1.sub(i,i+k) + s1.sub(i+k,i+l)
+							//s2.sub(j,j+l) = s2.sub(j,j+k) + s2.sub(j+k,j+l)
+							dp[i][j][l] = dp[i][j][l] || (dp[i][j][k] && dp[i+k][j+k][l-k]);
+							//s1.sub(i,i+l) = s1.sub(i,i+k)     + s1.sub(i+k,i+l)
+							//s2.sub(j,j+l) = s2.sub(j,j+l-k) + s2.sub(j+l-k,j+l) 
+							dp[i][j][l] = dp[i][j][l] || (dp[i][j+l-k][k] && dp[i+k][j][l-k]);
+							//found a possible solution
+							if(dp[i][j][l] == true) break;
+						}
+					}				
+				}
+			}
 		}
-		else{
-			return aux(l1,m1, r2-n2/2, r2) && aux(r1-n1/2,r1,l2, m2);
-			
+		
+
+//		print(dp);
+		return dp[0][0][n];
+	}
+	
+	public static void main(String[] args){
+		long start = System.currentTimeMillis();
+		String s1 = "great";
+//		String s2 = "taerg";
+		String s2 = "taegr";
+//		String s1 = "tea";
+//		String s2 = "tea";
+		
+
+		ScrambleString solu = new ScrambleString();
+		System.out.println(solu.isScramble(s1, s2));
+		
+	}
+	private void print(boolean[][][] dp){
+		int n = dp.length;
+		for(int l=1;l<=n;l++){
+			for(int i=0;i<n;i++){
+				for(int j=0;j<n;j++){
+					System.out.print(dp[i][j][l]+", ");			
+				}
+				System.out.println();
+			}
+			System.out.println("---------------------------");
 		}
 	}
-
 }

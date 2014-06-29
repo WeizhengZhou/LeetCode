@@ -1,74 +1,50 @@
-import java.util.*;
+
 public class PalindromePartitioningII {
-	private String s = null;
-	private int n = 0;
-	private boolean[][] isPal = null;	
-	public int minCut(String s) {	
-		if(s == null || s.length() < 2) return 0;
-		this.s = s;
-		this.n = s.length();
-		this.isPal = new boolean[n][n];		
-		buildGraph(s);
-		return findMinCuts();
-    }
-	private void buildGraph(String s){	
-		for(int i=0;i<n;i++)
-			isPal[i][i] = true;	
+	public int minCut(String s){
+		if(s == null || s.length() <= 1) return 0;
+		int n = s.length();
+		boolean[][] isPal = new boolean[n][n];//isPal[i][j] = true if s[i...j] is a palindrome
+		int[] minCuts = new int[n];//minCuts[i] = number of min cuts for s[0,i]
+
+		//build isPal table
 		for(int i=1;i<n;i++)
-			isPal[i][i-1] = true;			
-		for(int l=2;l<=n;l++){
-			for(int i=0;i<=n-l;i++){
-				int j = i+l-1;
-				if(s.substring(i,i+1).equals(s.substring(j,j+1)))
-					isPal[i][j] = isPal[i+1][j-1];	
-				else
-					isPal[i][j] = false;
-			}		
-		}
-//		print(isPal);	
-	}
-	private int findMinCuts(){
-		int minCuts = n-1;	
-		for(int i=0;i<n;i++){
-			if(isPal[0][i] == true){
-				int nCuts = bfs(i);
-				minCuts = Math.min(nCuts, minCuts);			
-			}
-		}
-		return minCuts;
-	}
-	private int bfs(int r){
-		if(r == n-1) return 0;
-		Queue<Integer> curRow = new LinkedList<>();
-		Queue<Integer> nextRow = new LinkedList<>();
-		curRow.add(r);			
-		int nCuts = 1;	
-		while(!curRow.isEmpty()){
-			int i = curRow.remove();
-//			System.out.println("row = " + i + ", nCuts = " + nCuts);
-			for(int k=i+1;k<n;k++){//start from j+1 row						
-				if(isPal[i][k] == true){
-					if(k == n-1){
-//						System.out.println("i = " + i + ", k = "+ k);
-						return nCuts;
-					}	
-					nextRow.add(k);
+			isPal[i][i-1] = true;//empty string is palindrome
+		for(int i=0;i<n;i++)
+			isPal[i][i] = true;//single character is palindrome
+		for(int len=2;len<=n;len++){//length from 2 to n
+			for(int i=0;i<=n-len;i++){//i from 0 to n-1
+				int j = i+len-1;
+				if(s.charAt(i) == s.charAt(j)){//
+					isPal[i][j] = isPal[i+1][j-1];				
 				}
 			}
-			if(curRow.isEmpty()){
-				curRow = new LinkedList<>(nextRow);
-				nextRow.clear();
-				nCuts++;
+		}
+		
+		for(int i=0;i<n;i++)
+			minCuts[i] = i;//min cuts at most i-1
+		for(int i=0;i<n;i++){//s[0...i]
+			for(int j=0;j<=i;j++){//cut at 0<=j<=i
+				if(isPal[j][i]){
+					if(j ==0)
+						minCuts[i] = 0;
+					else
+						minCuts[i] = Math.min(minCuts[i], minCuts[j-1]+1);
+				}				
 			}
-		}		
-		return nCuts;
+		}
+				
+//		print(isPal);
+		return minCuts[n-1];
 	}
+	
 	public static void main(String[] args){
 //		String t = "aab";
 //		String t = "abbd";
 //		String t = "ababababababababababababcbabababababababababababa";
 //		String t = "ababbbabbaba";
-		String t = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+//		String t = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+//		String t = "cdd";
+		String t="eegiicgaeadbcfacfhifdbiehbgejcaeggcgbahfcajfhjjdgj";
 		PalindromePartitioningII solution = new PalindromePartitioningII();
 		System.out.println(solution.minCut(t));		
 	}

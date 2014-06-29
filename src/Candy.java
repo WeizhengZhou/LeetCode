@@ -1,68 +1,44 @@
-
+import java.util.*;
+/**
+ * @see http://blog.csdn.net/linhuanmars/article/details/21424783
+ * 
+ * @author Weizheng
+ *
+ */
 public class Candy {
     public int candy(int[] A) {
-    	if(A == null) return 0;
-    	if(A.length == 1) return 1;
-
-    	int nCandy = 0;  
-    	
-    	int lv = 0;//left valley
-		int peak = 0;//peak between the left valley and the right valley
-		int rv = 0;//right valley
-    		  	
-        lv = nextValley(A,0);
-        
-        //A[0] is a peak, give candy between A[0] to A[lv]     
-    	if(lv != 0){
-    		nCandy += monoCandy(lv+1);
+    	if(A == null||A.length == 0) return 0;
+    	int n = A.length;
+    	int[] L = new int[n];//least candy needed compared to left child
+    	int[] R = new int[n];//least candy needed compared to right child
+    	L[0] = 1;//first child need as least one
+    	for(int i=1;i<n;i++){
+    		if(A[i]>A[i-1]) //if larger rating than left
+    			L[i] = L[i-1]+1;//candy + 1
+    		else
+    			L[i]=1;//else, it may be a valley
     	}
-    	//move though all duplicates 
-    	while(lv < A.length -1 && A[lv] == A[lv+1]){
-    		nCandy++;
-    		lv++;
+        R[n-1] = 1;//last child candy needed is one
+    	for(int i=n-2;i>=0;i--){
+    		if(A[i]>A[i+1]) //larger than right child
+    			R[i] = R[i+1]+1;
+    		else
+    			R[i]=1;
     	}
+//    	System.out.println(Arrays.toString(L));
+//    	System.out.println(Arrays.toString(R));
+    	int res = 0;
+    	for(int i=0;i<n;i++)
+    		res+=Math.max(L[i], R[i]);
+    	return res;   	
+    }
     
-    	while(lv < A.length){
-    		peak = nextPeak(A, lv);
-    		rv = nextValley(A, peak);
-    		if(peak == A.length -1){
-    			nCandy += monoCandy(peak - lv + 1);
-    		}
-    		else if(peak - lv < rv - peak){//left is longer
-    			
-    			  			
-    		}
-    		else{
-    			
-    		}   			  		
-    	}	   		 	
-    }
-    private int peakCandy(int lv, int peak, int rv){
+    public static void main(String[] args){
+    	int[] A = new int[]{1,2,2};
+//    	int[] A = new int[]{2,1};
+//    	int[] A = new int[]{2,2,1};
+    	Candy c = new Candy();
+    	System.out.println(c.candy(A));
     	
-    }
-    private int monoCandy(int n){
-    	int cur = 1;
-    	int nCandy = 0;
-    	while(n > 0){
-    		nCandy += cur;
-    		cur++;
-    	}
-    	return nCandy;   	
-    }
-    private int nextPeak(int[] A, int s){
-    	if(s == 0 && A[0] >= A[1]) return 0;
-    	for(int i=1;i<A.length-1;i++){
-    		if(A[i]>=A[i-1] && A[i] >= A[i+1])
-    			return i;
-    	}
-    	return A.length-1; 	
-    }
-    private int nextValley(int[] A, int s){
-    	if(s == 0 && A[0] <= A[1]) return 0;
-    	for(int i=1; i<A.length-1;i++){
-    		if(A[i] <= A[i-1] && A[i] <= A[i+1])
-    			return i;
-    	}
-    	return A.length-1;   	
     }
 }

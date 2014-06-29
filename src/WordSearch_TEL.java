@@ -19,7 +19,7 @@ public class WordSearch_TEL {
 			
 		for(int i=0;i<m;i++){
 			for(int j=0;j<n;j++){	
-				System.out.println("start at i = " + i + ", j = "+ j);
+//				System.out.println("start at i = " + i + ", j = "+ j);
 			   if(dfs(0, i, j) == true)
 				   return true;
 			}
@@ -27,7 +27,7 @@ public class WordSearch_TEL {
 		return false;
 	}
 	public boolean dfs(int k, int x, int y){
-		System.out.println("k = " + k + ", x = " + x + ", y = " + y);
+//		System.out.println("k = " + k + ", x = " + x + ", y = " + y);
 		if(k == word.length)
 			return true;
 		
@@ -35,28 +35,22 @@ public class WordSearch_TEL {
 			return false;
 		
 		visited[x][y] = true;
-	
-		boolean l,r,u,d;
-		
-		l = dfs(k+1, (x-1+m)%m,    y);//left neighbor
-		r = dfs(k+1, (x+1)%m,      y);//right neighbor
-		u = dfs(k+1, x,        (y-1+n)%n);//upper neighbor
-		d = dfs(k+1, x,        (y+1)%n);//down neighbor
-		
+		boolean res = false;
+		res = dfs(k+1, (x-1+m)%m, y) || dfs(k+1, (x+1)%m,y) 
+				|| dfs(k+1, x, (y-1+n)%n)|| dfs(k+1, x, (y+1)%n);
 		visited[x][y] = false;
-		
-		if(l||r||u||d) return true;
-		else return false; 					
+		return res;
+			
 	}
 	public static void main(String[] args){
 //		char[][] board = new char[][]{{'A','B','C','E'},
 //			                          {'S','F','C','S'},
 //			                          {'A','D','E','E'}};
-		char[][] board = new char[][]{{'b','a','a','a'},
+		char[][] board = new char[][]{{'a','a','a','a'},
                                       {'a','a','a','a'},
                                       {'a','a','a','b'}};
 		
-		String word = "babaaaaaaaaa";
+		String word = "baaaaaaaaaaa";
 		WordSearch_TEL s = new WordSearch_TEL();
 		System.out.println(s.exist(board, word));
 		

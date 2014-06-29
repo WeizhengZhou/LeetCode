@@ -2,38 +2,48 @@
 import java.util.*;
 
 public class SubstringwithConcatenationofAllWords {
+	private String S = null;
+	private String[] L = null;
     public List<Integer> findSubstring(String S, String[] L) {
-    	if(S == null || L == null) return new ArrayList<>();
-    	List<Integer> res = new ArrayList<>();
-    	Map<String,Integer> map = new HashMap<>();
+    	if(S == null || L == null) 
+    		return new ArrayList<>();
+    	this.S = S;
+    	this.L = L;
     	
-    	for(int i=0;i<L.length;i++)
-    		map.put(L[i],i);
-    	for(int i=0;i< S.length() - L[0].length() * L.length;i++){
-    		
-    		boolean[] mark = new boolean[L.length];
-    		int j = i;
-    		while(j < i+ L[0].length()*L.length){
-//    			System.out.println(" i= " + i + ", j = "+ j);
-    			String s = S.substring(j,j+L[0].length());
-    			if(map.containsKey(s)){
-    				int index = map.get(s);
-    				if(mark[index] == false)
-    					mark[index] = true;
-    				else
-    					break; 				 				
-    			}
-    			j = j + L[0].length();
-    		}
-    		boolean isValid = true;
-    		for(int k=0;k< mark.length;k++)
-    			if(mark[k] == false)
-    				isValid = false;
-    		if(isValid){
-    			res.add(i);
-    		}
+    	Map<String,Integer> map = new HashMap<String,Integer>();//count each string's occurrence 
+    	for(int i=0;i<L.length;i++){
+    		if(!map.containsKey(L[i]))
+    			map.put(L[i],1);
+    		else
+    			map.put(L[i], map.get(L[i])+1);
+    	}	
+    	
+    	List<Integer> res = new ArrayList<>();
+    	for(int i=0;i<=S.length() - L.length * L[0].length();i++){
+    		if(isSubstring(i, new HashMap<String, Integer>(map)))
+    			//if S[i...] is a Concatenation of All Words of all words of L[] 
+    				res.add(i);	
     	}
+    	   	
     	return res;
+    }
+    private boolean isSubstring(int i, Map<String, Integer> map){
+    	int step = L[0].length();    	
+    	String cur = null;
+    	while(i <= S.length()-step){//not i < S.length()
+    		cur = S.substring(i,i+step);
+    		if(!map.containsKey(cur)) break;
+    		else{
+    			int count = map.get(cur);
+        		if(count == 1)
+        			map.remove(cur);
+        		else
+        			map.put(cur, count-1);
+    		}   		
+    		i += step;		
+    	}
+    	if(map.size() == 0) return true;//all words found and cleared 
+    	else return false;//clear process being interrupted    	  	
     }
    
     
@@ -41,8 +51,10 @@ public class SubstringwithConcatenationofAllWords {
     public static void main(String[] args){
 //    	String S = "barfoothefoobarman";	
 //    	String[] L = new String[]{"foo","bar"};
-    	String S = "aaa";
-    	String[] L = new String[]{"a","a"};
+//    	String S = "aaa";
+//    	String[] L = new String[]{"a","a"};
+    	String S = "acaacc";
+    	String[] L = new String[]{"ca","ac"};
     	
     	SubstringwithConcatenationofAllWords solution = new SubstringwithConcatenationofAllWords();
     

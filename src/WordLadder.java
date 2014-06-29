@@ -60,8 +60,7 @@ public class WordLadder {
 		if(t.pre == null)
 			System.out.print(t.word);
 		else{
-			print(t.pre);
-			
+			print(t.pre);			
 			System.out.print(" -> " + t.word);
 		}
 	}
