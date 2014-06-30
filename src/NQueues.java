@@ -28,7 +28,7 @@ public class NQueues {
     	
     	for(int j=0;j<n;j++){
     		if(isValid(board,row,j)){  			
-    	    	System.out.println("i = " + row + ", j = " + j);
+//    	    	System.out.println("i = " + row + ", j = " + j);
     	    	board[row][j] = true;
     			nQueues_helper(board,row+1,n,list);
     			board[row][j] = false;
