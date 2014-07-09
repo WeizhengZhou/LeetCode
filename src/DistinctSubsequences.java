@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 
 public class DistinctSubsequences {
 	public int numDistinct(String S, String T) {
@@ -19,8 +17,7 @@ public class DistinctSubsequences {
 			L[0][j] = 0;
 		
 		for(int i=1;i<m+1;i++){
-			for(int j=1;j<n+1;j++){
-//				System.out.println("i = " + i + ", j = " + j);				
+			for(int j=1;j<n+1;j++){		
 				if( S.charAt(i-1) == T.charAt(j-1)){
 					//we can choose to match i-1 with j or match i with j
 					L[i][j] = L[i-1][j] + L[i-1][j-1];
@@ -30,7 +27,6 @@ public class DistinctSubsequences {
 				}							
 			}
 		}
-//		print(L);
 		return L[m][n];
 	}
 	public static void main(String[] args){

@@ -3,29 +3,25 @@ import java.util.Stack;
 public class EvaluateReversePolishNotation {
 	public int evalRPN(String[] tokens) {
 		if(tokens == null) return Integer.MIN_VALUE;
-		Stack<Integer> s = new Stack<Integer>();
-		
+		Stack<Integer> s = new Stack<Integer>();		
 		for(int i=0;i<tokens.length;i++){
 			String t = tokens[i];
-			
-			if(t.equals("+"))
-				s.push(s.pop() + s.pop());
-			else if(t.equals("*"))
-				s.push(s.pop() * s.pop());
-			else if(t.equals("-")){
+			if(t.equals("+") || t.equals("-") || t.equals("*") ||t.equals("-")){
 				int a = s.pop();
 				int b = s.pop();
-				s.push(b - a);			
+				if(t.equals("+"))
+					s.push(a+b);
+				else if(t.equals("-"))
+					s.push(a-b);
+				else if(t.equals("*"))
+					s.push(a*b);
+				else
+					s.push(b/a);
 			}
-			else if(t.equals("/")){
-				int a = s.pop();
-				int b = s.pop();
-				s.push(b / a);	
-			}
-			else
-				s.push(Integer.parseInt(t));		
-			
-			System.out.println(s);
+			else{
+				//t should be a numbers
+				s.push(Integer.parseInt(t));	
+			}				
 		}
 		return s.pop();
 
@@ -35,10 +31,8 @@ public class EvaluateReversePolishNotation {
 		t = new String[]{"4", "13", "5", "/", "+"};
 		t = new String[]{"3","-4","+"};
 		t = new String[]{"18"};
-//		t = new String[]{"13","5","/"};
-		t = new String[]{"4","3","-"};
-		
+		t = new String[]{"13","5","/"};
+		t = new String[]{"4","3","-"};		
 		System.out.println(new EvaluateReversePolishNotation().evalRPN(t));
 	}
-
 }

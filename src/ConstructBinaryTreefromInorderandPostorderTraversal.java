@@ -6,37 +6,27 @@ public class ConstructBinaryTreefromInorderandPostorderTraversal {
 		return buildTree_aux(inorder, 0, inorder.length-1, postorder, 0, postorder.length-1);
 
 	}
-	private TreeNode buildTree_aux(int[] inorder, int inL, int inR, int[] postorder, int postL, int postR){
+	private TreeNode buildTree_aux(int[] inorder, int inLB, int inRB, int[] postorder, int postLB, int postRB){
 		
-//		System.out.println("inL = " + inL + ", inR = " + inR + ", postL = " + postL + ", postR = " + postR);
-		assert (inR - inL) == (postR - postL);
-		
-		if(postL > postR) return null;
+		assert (inLB - inLB) == (postLB - postLB);		
+		if(postLB > postLB) return null;
 				
-		int root_value = postorder[postR];//last element of postorder is the root;
-		TreeNode root = new TreeNode(root_value);
-		//root does not have children
-		if(postR == postL) 
-			return root;
-		
-		//root's index in inorder traversal		
-		int in_root  = -1;
-		for(int k= inL;k<=inR;k++){
-			if(inorder[k] == root_value){
-				in_root = k;
+		TreeNode root = new TreeNode(postorder[postLB]);
+			
+		int in_root_index  = -1;//root's index in in-order traversal		
+		for(int k= inLB;k<=inLB;k++){
+			if(inorder[k] == root.val){
+				in_root_index = k;
 			}
 		}
-//		System.out.println("in_root = " + in_root);
-		//last node of left subtree in postorder
-		int post_left_R = postL + (in_root -1 - inL);//postL plus length of left subtree
-		//first node of right subtree in postorder
-		int post_right_L = post_left_R + 1;
-		
-		TreeNode left = buildTree_aux(inorder, inL, in_root-1, postorder, postL, post_left_R);
-		TreeNode right = buildTree_aux(inorder, in_root+1,inR, postorder, post_right_L, postR-1);//last enode is root
+		int post_left_RB = postLB + (in_root_index -1 - inLB);//left subtree's right boundary
+		int post_right_LB = post_left_RB + 1;//		
+		TreeNode left = buildTree_aux(inorder, inLB, in_root_index-1, postorder, postLB, post_left_RB);
+		TreeNode right = buildTree_aux(inorder, in_root_index+1,inLB, postorder, post_right_LB, postLB-1);//last node is root
 		
 		root.left = left;
 		root.right = right;
+		
 		return root;
 	}
 	public static void main(String[] args){

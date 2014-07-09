@@ -45,9 +45,7 @@ public class BestTimetoBuyandSellStockIII {
 		for(int i=0;i<n-1;i++){//two transitions, cut at i
 			maxProfit = Math.max(maxProfit,L[i]- R[i+1]);		
 		}
-		
-//		System.out.println(Arrays.toString(L));		
-//		System.out.println(Arrays.toString(R));
+
 		
 		return maxProfit;
 	}

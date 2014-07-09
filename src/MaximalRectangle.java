@@ -20,7 +20,6 @@ public class MaximalRectangle {
 		return maxArea;
 	}
 	public int histRectArea(int[] h){
-//		System.out.println(Arrays.toString(h));
 		int maxArea = 0;
 		Stack<Integer> indexStack = new Stack<>();//stack stores an increasing sub array of h
 	    int i = 0;

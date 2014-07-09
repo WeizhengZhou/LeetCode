@@ -1,28 +1,7 @@
 import java.util.*;
 
 public class MergekSortedLists {
-	public ListNode mergeKLists(List<ListNode> lists) {
-		if(lists == null) 
-			return null;
-		int n = lists.size();
-		if(n == 0) return null;
-		if(n == 1) 
-			return lists.get(0);
-		if(n == 2)
-			return mergeTwo(lists.get(0),lists.get(1));
-		
-		
-		List<ListNode> la = lists.subList(0, n/2);
-		List<ListNode> lb = lists.subList(n/2,n);
-		
-		ListNode a = mergeKLists(la);
-		ListNode b = mergeKLists(lb);
-		
-		return mergeTwo(a,b);
-		
-	}
-	public ListNode mergeTwo(ListNode a, ListNode b){
-	
+	public ListNode mergeTwo(ListNode a, ListNode b){	
 		ListNode dummyHead = new ListNode(0);
 		ListNode tail = dummyHead;
 		while(a != null && b != null){
@@ -35,25 +14,53 @@ public class MergekSortedLists {
 				b = b.next;
 			}
 			tail = tail.next;
-
 		}
 		tail.next = (a==null) ? b : a;		
-		return dummyHead.next;
-		
+		return dummyHead.next;		
 	}
-
+	public ListNode mergeKLists(List<ListNode> lists) {
+		if(lists == null || lists.size() == 0) return null;
+		return helper(lists,0,lists.size()-1);			
+	}
+	private ListNode helper(List<ListNode> lists, int l, int r){
+		if(l == r) return lists.get(l);
+		int m = l + (r-l)/2;
+		ListNode mergedL = helper(lists, l, m);
+		ListNode mergedR = helper(lists, m+1, r);
+		return mergeTwo(mergedL, mergedR);		
+	}
+	public ListNode mergeKLists_PriorityQueue(List<ListNode> lists){
+		if(lists == null || lists.size() == 0) return null;
+		PriorityQueue<ListNode> queue = new PriorityQueue<>(lists.size(), new Comparator<ListNode>(){
+			@Override
+			public int compare(ListNode a, ListNode b){
+				return a.val - b.val;
+			}
+		});
+		for(ListNode head : lists)
+			if(head != null)
+				queue.add(head);
+				
+		ListNode dummyHead = new ListNode(0);
+		ListNode tail = dummyHead;
+		while(!queue.isEmpty()){
+			tail.next = queue.poll();
+			tail = tail.next;
+			if(tail.next != null)
+				queue.add(tail.next);
+		}
+		return dummyHead.next;
+	}
 	public static void main(String[] args){
 		ListNode a = new ListNode().createList(new int[]{1,5,7});
 		ListNode b = new ListNode().createList(new int[]{2,6,8});
-		ListNode c = new ListNode().createList(new int[]{3,4,9});
+		ListNode c = new ListNode().createList(new int[]{});
 		List<ListNode> lists = new ArrayList<ListNode>();
 		lists.add(a);
 		lists.add(b);
 		lists.add(c);
-		ListNode res = new MergekSortedLists().mergeKLists(lists);
-		a.printList(res);
-		
+//		ListNode res = new MergekSortedLists().mergeKLists(lists);
+		ListNode res = new MergekSortedLists().mergeKLists_PriorityQueue(lists);
+		a.printList(res);		
 	}
-
-
 }

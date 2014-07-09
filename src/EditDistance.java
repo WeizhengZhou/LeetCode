@@ -4,22 +4,23 @@ public class EditDistance {
 		if(s1 == null || s2 == null) return 0;
 		int n1 = s1.length();
 		int n2 = s2.length();
-		//min number of operations to match s1.substring(0,i) and s2.substring(0,j)
-		int[][] L = new int[n1+1][n2+1];
-		//empty s1 string need i operation to match s2.substring(0,j)
+		//minimum number of operations to match s1.substring(0,i) and s2.substring(0,j)
+		int[][] L = new int[n1+1][n2+1];//finally return L[n1][n2]
+		//empty str1 needs lenght(str2) to match str2
 		for(int i=0;i<=n1;i++)
 			L[i][0] = i;
 		for(int j=0;j<=n2;j++)
 			L[0][j] = j;
 		for(int i=1;i<=n1;i++){
 			for(int j=1;j<=n2;j++){
-				int min = Math.min(L[i-1][j], L[i][j-1]);//delete and insert
-				min = Math.min(min, L[i-1][j-1]);//replace
-				L[i][j] = min + 1;//plut one operation
-				
-				//no operation
-				if(s1.substring(i-1,i).equals(s2.substring(j-1,j)))
-					L[i][j] = Math.min(L[i][j], L[i-1][j-1]);			
+				int insert = L[i-1][j]+1;
+				int delete = L[i][j-1];
+				int replace = L[i-1][j-1]+1;		
+				int min = Math.min(insert, delete);
+				min = Math.min(min, replace);
+					
+				if(s1.substring(i-1,i).equals(s2.substring(j-1,j)))//matches
+					L[i][j] = Math.min(min, L[i-1][j-1]);			
 			}
 		}
 //		print(L);

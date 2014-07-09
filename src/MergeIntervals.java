@@ -12,14 +12,12 @@ public class MergeIntervals {
 		}
 	}
 	public void sortOnStart(List<Interval> list){
-		
-		Comparator<Interval> comparator = new Comparator<Interval>(){
+		Collections.sort(list, new Comparator<Interval>(){
+			@Override
 			public int compare(Interval a, Interval b){
 				return a.start - b.start;
 			}
-		};
-		Collections.sort(list, comparator);
-		
+		});
 	}
 	public List<Interval> merge(List<Interval> intervals) {
 		if(intervals == null) return new ArrayList<Interval>();
@@ -29,6 +27,7 @@ public class MergeIntervals {
 		
 		int l = 0;
 		int r = 0;
+
 		while(l < intervals.size()){
 			int start = intervals.get(l).start;
 			int end = intervals.get(l).end;
@@ -43,14 +42,10 @@ public class MergeIntervals {
 			}
 			res.add(new Interval(start,end));
 			l = r;
-		}
-		
+		}		
 		return res;
-		
 	}
-	public static void main(String[] args){
-		
-	
+	public static void main(String[] args){		
 		MergeIntervals s = new MergeIntervals();
 		
 		MergeIntervals.Interval a = s.new Interval(1,3) ;			
@@ -65,8 +60,7 @@ public class MergeIntervals {
 		list.add(c);
 		list.add(d);
 //		s.sortOnStart(list);
-		List<Interval> res = s.merge(list);
-				
+		List<Interval> res = s.merge(list);			
 		System.out.println(res);
 		
 //		System.out.println(comparator.compare(a, b));

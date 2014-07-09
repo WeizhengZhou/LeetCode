@@ -14,14 +14,12 @@ public class InsertInterval {
 			return "[" + start + ", " + end + "]";  
 		}
 	}
-	public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
-				
+	public List<Interval> insert(List<Interval> intervals, Interval newInterval) {				
 		if(intervals == null){
 			List<Interval> res = new ArrayList<Interval>();
 			res.add(newInterval);
 			return res;
-		}
-		
+		}		
 		List<Interval> before = new ArrayList<Interval>();
 		List<Interval> after = new ArrayList<Interval>();
 		
@@ -36,8 +34,7 @@ public class InsertInterval {
 				before.add(cur);
 			}
 			else if(curStart > end){
-				after.add(cur);
-				
+				after.add(cur);				
 			}
 			else{
 				start = Math.min(start, curStart);
@@ -46,8 +43,7 @@ public class InsertInterval {
 		}
 		before.add(new Interval(start,end));
 		before.addAll(after);
-		return before;
-		
+		return before;		
 	}
 	public static void main(String[] args){
 		InsertInterval s = new InsertInterval();

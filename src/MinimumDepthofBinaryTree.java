@@ -1,21 +1,19 @@
 
-public class MinimumDepthofBinaryTree {
+public class MinimumDepthofBinaryTree {	
 	private int minDepth = Integer.MAX_VALUE;
-	public int minDepth(TreeNode root) {
+	public int minDepth(TreeNode root){
 		if(root == null) return 0;
-		depth(root,0);
-		return minDepth;	        
+		helper(root,0);
+		return minDepth;
 	}
-	private void depth(TreeNode root, int d){
-		if(root == null) 
-			return;
-		else if(root.left == null && root.right == null){
-			minDepth = Math.min(minDepth, d);		
-		}
-	    if(root.left != null)
-			depth(root.left, d+1);
+	private void helper(TreeNode root, int d){
+		if(root == null) return;
+		if(root.left == null && root.right == null)
+			minDepth = Math.min(minDepth,d+1);
+		if(root.left != null)
+			helper(root.left, d+1);
 		if(root.right != null)
-			depth(root.right,d+1);					
+			helper(root.right,d+1);
 	}
 	public static void main(String[] args){
 		TreeNode root = new TreeNode(1);

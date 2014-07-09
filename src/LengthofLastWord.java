@@ -2,11 +2,12 @@
 public class LengthofLastWord {
     public int lengthOfLastWord(String s) {
     	int end = preNonSpace(s,s.length()-1);
-    	int start = preSpace(s,end);
-    	
+    	int start = preSpace(s,end);  	
     	return end - start;
-        
     }
+    /**
+     * the index of previous non-space character before k (including)
+     */
     private int preNonSpace(String s, int k){
     	while(k>=0){
     		if(!s.substring(k,k+1).equals(" "))
@@ -15,6 +16,9 @@ public class LengthofLastWord {
     	}
     	return k;
     }
+    /**
+     * the index of previous space character before k (including)
+     */
     private int preSpace(String s, int k){
     	while(k >= 0){
     		if(s.substring(k,k+1).equals(" "))

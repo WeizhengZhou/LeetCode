@@ -1,51 +1,77 @@
 import java.util.*;
-public class CombinationSum {
+public class CombinationSum {	
+
+//	public List<List<Integer>> combinationSum(int[] cand, int target) {	
+//		List<Integer> list = new ArrayList<>();		
+//		List<List<Integer>> lists = new ArrayList<List<Integer>>();
+//		if(cand == null) 
+//			return lists;
+//		Arrays.sort(cand);
+//		helper(cand,0, target,list,lists, 0);
+//		return lists;       
+//	}
+//	private void helper(int[] cand, int index, int target, List<Integer>list, List<List<Integer>> lists, int level){
+//		System.out.println("(" + index + ", " + target + ")");
+//	
+//		if(target < 0) 
+//			return;
+//		else if(target == 0){
+//			lists.add(new ArrayList<>(list));//remember create a new list, otherwise, list will finally be empty
+//			return;
+//		}
+//		else if(index >= cand.length)
+//			return;
+//		else if(cand[index] <= target){
+//			String format = new String(new char[2*(level+1)]).replace("\0", "   ");
+//	    	
+//			System.out.print(format + "|______A ");
+//			helper(cand,index+1,target,list,lists,level+1);
+//			
+//			list.add(cand[index]);
+//			System.out.print(format + "|______B ");	
+//			helper(cand,index,target-cand[index],list,lists,level+1);
+//			
+//			System.out.print(format + "|______C ");
+//			helper(cand,index+1,target-cand[index],list,lists,level+1);
+//			
+//			list.remove(list.size()-1);		
+//		}		
+//	}
 	
-    public List<List<Integer>> combinationSum(int[] cand, int target) {
-    	if(cand == null) return null;
-    	
-    	Arrays.sort(cand);
-    	List<Integer> list = new ArrayList<>();
-    	List<List<Integer>> lists = new ArrayList<List<Integer>>();
-    	  	
-    	if(cand[0] > target) return lists;
-    	
-    	helper(cand,0,target,list,lists);
-    	this.printLists(lists);
-    	return lists;
-        
-    }
-    public void helper(int[] cand, int k, int target, List<Integer> list, List<List<Integer>> lists) {
-    	if(k > cand.length-1) return;
-   
-    	
-    	System.out.println("k = " + k + ", target = " + target + " : " + list);
-    	
-    	if(target == 0 && !lists.contains(list)){		
-    		lists.add(list);
-    	}
-    	if(target < cand[k])
-    		return;
-    	
-    	
-    	
-    	List<Integer> la = new ArrayList<Integer>(list);
-//    	List<Integer> lb = new ArrayList<Integer>(list);
-    	List<Integer> lc = new ArrayList<Integer>(list);
-    	
-    	la.add(cand[k]);
-//    	lb.add(cand[k]);
-    	
-    	helper(cand,k,  target-cand[k],la,lists);//include cand[k], and still want to add more cand[k]
-    	helper(cand,k+1,target-cand[k],la,lists);//include cand[k], but does not want to add more cand[k]
-    	helper(cand,k+1,target,        lc,lists);//does not include cand[k]
-        
-    }
+
+	public List<List<Integer>> combinationSum(int[] cand, int target) {	
+		List<Integer> list = new ArrayList<>();		
+		List<List<Integer>> lists = new ArrayList<List<Integer>>();
+		if(cand == null) 
+			return lists;
+		Arrays.sort(cand);
+		helper(cand,0, target,list,lists);
+		return lists;       
+	}
+	private void helper(int[] cand, int index, int target, List<Integer>list, List<List<Integer>> lists){
+		System.out.println("(" + index + ", " + target + ")");	
+		if(target < 0) 
+			return;
+		else if(target == 0){
+			lists.add(new ArrayList<>(list));//remember create a new list, otherwise, list will finally be empty
+			return;
+		}
+		else{
+			for(int i=index;i<cand.length;i++){
+				if(cand[i] > target) break;//no valid solutions anymore 
+				list.add(cand[i]);
+				helper(cand,i,target-cand[i],list,lists);//still can use cand[i]
+				list.remove(list.size()-1);//remember to remove
+			}
+		}
+	}
     public static void main(String[] args){
-    	int[] cand = new int[]{7,3,9,6};
+
+    	int[] cand = new int[]{3,6};
     	int target = 6;
     	CombinationSum  solution = new CombinationSum ();
-    	solution.combinationSum(cand, target);
+    	List<List<Integer>> lists = solution.combinationSum(cand, target);
+//    	solution.printLists(lists); 
     	
     }
     private void printLists(List<List<Integer>>  lists){
@@ -54,8 +80,6 @@ public class CombinationSum {
     			System.out.print(a + ", ");
     		}
     		System.out.println();
-    	}
-    	
+    	}   	
     }
-
 }

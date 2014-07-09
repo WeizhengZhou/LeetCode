@@ -2,6 +2,9 @@ import java.util.Arrays;
 
 
 public class JumpGameII {
+	/**
+	 * O(n^2) solution
+	 */
 //  public int jump(int[] A) {
 //	if(A == null) return -1;
 //	int[] L = new int[A.length];
@@ -20,8 +23,6 @@ public class JumpGameII {
 //}
 	/**
 	 * O(n) solution
-	 * region [l,r] is the reachable region from A[0], with count steps
-	 * in the for loop, we update the new reachable region, with count+1 steps 
 	 * @param A
 	 * @return
 	 */
@@ -29,23 +30,21 @@ public class JumpGameII {
     	if(A == null) return -1;
     	if(A.length == 1) return 1;
     	
-    	int count = 0;
-    	int l = 0;
+    	int l = 0;//reachable window [l,r]
     	int r = 0;
-    	int max = 0;
+    	int nSteps = 0;//nSteps to reach window [l,r]
+    	int curR = 0;//current reachable right boundary
     	while(r < A.length){
-    		count ++;
-    		for(int i=l;i<=r;i++){
-    			if(A[i] + i >= A.length-1)
-    				return count;
-    			if(A[i] + i > max)
-    				max = A[i] + i;
+    		nSteps ++;//move one step
+    		for(int i=l;i<=r;i++){//each starting position 
+    			curR = Math.max(curR, A[i]+i);//update curR
+    			if(curR >= A.length-1)//reach the end of array
+    				return nSteps;
     		}
     		l = r+1;
-    		r = max;
-    		
+    		r = curR;
     	}
-    	return count;    	
+    	return nSteps;    	
     }
     
     public static void main(String[] args){

@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 
 public class DecodeWays {
 	public int numDecodings(String s) {
@@ -31,5 +29,4 @@ public class DecodeWays {
 		System.out.println();
 		System.out.println(solu.numDecodings(s));
 	}
-
 }

@@ -22,12 +22,11 @@ public class LargestRectangleinHistogram {
 			if(stack.isEmpty() || A[i] > A[stack.peek()]){
 				stack.push(i++);
 			}
-			else{
-				//min as the min height in current rectangle
-				int min = stack.pop();
-				//if stack is empty, min's left has i bars, which are higher than A[min]
-				//otherwise, this rectangle has stack.pop() as its left boundary, and A[i] as its right boundary
-				int area = A[min] * (stack.isEmpty() ? i:(i - stack.peek()-1));
+			else{				
+				int min = stack.pop();// top element as the short bar
+			    //If stack is empty, the ith bar is the shortest so far, so width = i.
+			   //Else, the L bar has index stack.peek()+1, and R bar has index i-1. Therefore width = i-stack.peek()-1
+			   int area = A[min] * (stack.isEmpty() ? i:(i - stack.peek()-1));
 				maxArea = Math.max(maxArea, area);		
 			}	
 //			System.out.println("i = " + i + ", maxArea = " + maxArea + ",: " + stack);

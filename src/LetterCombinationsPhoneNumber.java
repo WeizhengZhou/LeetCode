@@ -17,22 +17,21 @@ public class LetterCombinationsPhoneNumber {
     	}
 //    	System.out.println("k = " + k);
 //    	print(res);
-    	return helper(res,digits,k+1);
-    	
-    	
+    	return helper(res,digits,k+1);	
     }
+    private String[] letter = new String[]{"",   "abc",  "def",
+                                          "ghi", "jkl",  "mno",
+                                           "pqrs","tuv",  "wxyz", " "};
     private String digitToLetter(String s){
-    	String[] letter = new String[]{"",   "abc",  "def",
-    			                      "ghi", "jkl",  "mno",
-    			                      "pqrs","tuv",  "wxyz", " "};
+
     	if(s.compareTo("9") <=0 && s.compareTo("0") >=0)
     		return letter[Integer.parseInt(s)-1];
-    	else 
-    		return null;
-    	
+    	else
+    		return "";
+    	   	
     }
     public static void main(String[] args){
-    	String s = "23";
+    	String s = ".23";
     	LetterCombinationsPhoneNumber solution = new LetterCombinationsPhoneNumber();
     	solution.letterCombinations(s);
     	

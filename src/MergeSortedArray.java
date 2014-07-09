@@ -5,7 +5,6 @@ public class MergeSortedArray {
 		 int j = n-1;
 		 int k = m+n-1;
 		 while(i >= 0 || j >= 0){
-//			 System.out.println("i = " + i + ", j = " + j + ", k = " + k);
 			 if(i < 0)
 				 A[k--] = B[j--];				 
 			 else if(j < 0)

@@ -25,8 +25,8 @@ public class Candy {
     		else
     			R[i]=1;
     	}
-//    	System.out.println(Arrays.toString(L));
-//    	System.out.println(Arrays.toString(R));
+    	System.out.println(Arrays.toString(L));
+    	System.out.println(Arrays.toString(R));
     	int res = 0;
     	for(int i=0;i<n;i++)
     		res+=Math.max(L[i], R[i]);
@@ -34,7 +34,7 @@ public class Candy {
     }
     
     public static void main(String[] args){
-    	int[] A = new int[]{1,2,2};
+    	int[] A = new int[]{1,2,2,3,4,1,2};
 //    	int[] A = new int[]{2,1};
 //    	int[] A = new int[]{2,2,1};
     	Candy c = new Candy();
