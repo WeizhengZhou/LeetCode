@@ -7,7 +7,6 @@ public class PascalsTriangle {
 		List<Integer> l1 = new ArrayList<Integer>();
 		l1.add(1);
 		lists.add(l1);
-		if(numRows == 1) return lists;
 				
 		for(int i=2;i<=numRows;i++){
 			List<Integer> pre = lists.get(lists.size()-1);

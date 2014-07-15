@@ -34,8 +34,6 @@ public class ReverseNodesinkGroup {
     }
     /**
      * cut the first k nodes, return the head of remaining list
-     * @param head
-     * @return
      */
     public ListNode cutFirstKNodes(ListNode head, int k){
     	if(k == 0) return head;

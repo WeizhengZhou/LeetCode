@@ -6,33 +6,26 @@ public class Searcha2DMatrix {
 
 	}
 	public boolean helper(int[][] matrix, int target, int l, int r){
-		if(l > r) return false;
-		if(l == r){
-			binarySearch(matrix,target,l,0,matrix[0].length-1);
-		}
-		
-		int row = (l+r)/2;
-		int column = matrix[0].length;
-	
-		if(target == matrix[row][column/2])
-			return true;
-		else if(target < matrix[row][0])
-			return helper(matrix,target,l,row-1);
-		else if(target > matrix[row][column-1])
-			return helper(matrix,target,row+1,r);
+		if(l > r) return false;	
+		int m = (l+r)/2;//middle row
+		int n = matrix[0].length;//column length
+		if(target < matrix[m][0])//search upper half of matrix
+			return helper(matrix,target,l,m-1);
+		else if(target > matrix[m][n-1])//search bottom half of matrix
+			return helper(matrix,target,m+1,r);
 		else
-			return binarySearch(matrix,target,row,0,column-1);
+			return binarySearch(matrix[m],target,0,n-1);//search this row
 		
 	}
-	public boolean binarySearch(int[][] matrix, int target, int row,  int l, int r){
+	public boolean binarySearch(int[] A, int target, int l, int r){
 		if(l > r) return false;
 		int m = (l+r)/2;
-		if(target == matrix[row][m])
+		if(target == A[m])
 			return true;
-		else if(target < matrix[row][m])
-			return binarySearch(matrix,target,row,l,m-1);
+		else if(target < A[m])
+			return binarySearch(A,target,l,m-1);
 		else 
-			return binarySearch(matrix,target,row,m+1,r);	
+			return binarySearch(A,target,m+1,r);	
 	}
 	public static void main(String[] args){
 		int[][] matrix = new int[][]{{1},{3}};
@@ -40,5 +33,4 @@ public class Searcha2DMatrix {
 		System.out.println(new Searcha2DMatrix().searchMatrix(matrix, target));
 		
 	}
-
 }

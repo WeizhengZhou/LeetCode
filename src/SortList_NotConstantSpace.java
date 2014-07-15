@@ -57,7 +57,7 @@ public class SortList_NotConstantSpace {
 		System.out.println();
 	}
 	public static void main(String[] args){
-		int[] A = new int[100000];
+		int[] A = new int[8000];
 		for(int i=0;i<A.length;i++){
 			A[i] = (int) (4 * Math.random());
 		}

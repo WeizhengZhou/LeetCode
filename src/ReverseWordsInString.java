@@ -1,37 +1,34 @@
 
 public class ReverseWordsInString {
 	public String reverseWords(String t){
-		//guard extreme case
 		if(t == null) return null;	
-		//use string builder for efficiency
 	    StringBuilder sb = new StringBuilder();
 	    
-	    int start = t.length();//start of a word
 	    int end = t.length();//end of a word
+	    int start;//start of a word	   
 	    while(true){
-	    	//find the previous non-space index
-	    	while(end > 0 && t.substring(end-1,end).equals(" ")){
-	    		end --;
-	    	}
-	    	//if no such space, exit loop
-	    	if(end <= 0) break;
-	    	//find the previous space index
+	    	//terminate when s.substring(end-1,end) is not a space
+	    	while(end > 0 && t.substring(end-1,end).equals(" "))
+	    		end--;
+	        	
+	    	if(end <= 0)//if no words any more, exit loop
+	    		break;
+	    	
+	    	//find the start of the word
 	    	start = end;
-	    	while(start >0 && !t.substring(start-1,start).equals(" ")){
+	    	//terminate when s.substring(start-1,start) is a space
+	    	while(start >= 0 && !t.substring(start-1,start).equals(" "))
 	    		start --;
-	    	}
-//	    	if(start < 0) break;
-	    	//append word and a space
+	    	
 	    	sb.append(t.substring(start,end) + " ");
 	    	end = start;
-	    
 	    }
 	    String res = sb.toString();
 	    //in case the res is empty, for example input is "    "
 	    if(res.length() == 0)
 	    	return "";
 	    else
-	        return res.substring(0,res.length()-1);//remove the last possible space
+	        return res.substring(0,res.length()-1);//remove the last space
 	    	
 	}
 	public static void main(String[] args){

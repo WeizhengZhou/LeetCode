@@ -5,15 +5,15 @@ public class WordSearch_TEL {
 	private char[] word = null;
 	private boolean[][] visited = null;
 	
-	public boolean exist(char[][] board, String word_str) {
-		if(board == null || word_str == null) return false;
+	public boolean exist(char[][] board, String wordStr) {
+		if(board == null || wordStr == null) return false;
 		
 		this.board = board;
-		this.word= word_str.toCharArray();
+		this.word= wordStr.toCharArray();
 		
 		this.m = board.length;
 		this.n = board[0].length;
-		this.visited = new boolean[this.m][this.n];
+		this.visited = new boolean[m][n];
 		
 		if(m*n < word.length) return false;
 			
@@ -27,7 +27,7 @@ public class WordSearch_TEL {
 		return false;
 	}
 	public boolean dfs(int k, int x, int y){
-//		System.out.println("k = " + k + ", x = " + x + ", y = " + y);
+		System.out.println("k = " + k + ", x = " + x + ", y = " + y);
 		if(k == word.length)
 			return true;
 		
@@ -43,13 +43,9 @@ public class WordSearch_TEL {
 			
 	}
 	public static void main(String[] args){
-//		char[][] board = new char[][]{{'A','B','C','E'},
-//			                          {'S','F','C','S'},
-//			                          {'A','D','E','E'}};
 		char[][] board = new char[][]{{'a','a','a','a'},
                                       {'a','a','a','a'},
-                                      {'a','a','a','b'}};
-		
+                                      {'a','a','a','b'}};		
 		String word = "baaaaaaaaaaa";
 		WordSearch_TEL s = new WordSearch_TEL();
 		System.out.println(s.exist(board, word));

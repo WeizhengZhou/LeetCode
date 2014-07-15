@@ -4,32 +4,24 @@ public class Triangle {
 	public int minimumTotal(List<List<Integer>> t) {
 		if(t == null || t.size() == 0) return -1;
 		
-		if(t.size() == 1) 
+		if(t.size() == 1)//t only has one level
 			return t.get(0).get(0);
-		
-		
-		if(t.size() == 2)
-			return t.get(0).get(0) + Math.min(t.get(1).get(0),  t.get(1).get(1));
-		
-		List<Integer> curSum = new ArrayList<Integer>();
-		
+			
+		List<Integer> curSum = new ArrayList<Integer>();//minimal sum to this level		
 		curSum.add(t.get(0).get(0) + t.get(1).get(0));
 		curSum.add(t.get(0).get(0) + t.get(1).get(1));
 		
-		List<Integer> nextSum = new ArrayList<Integer>();
-		
+		List<Integer> nextSum = new ArrayList<Integer>();		
 		for(int i=2;i<t.size();i++) {
 			List<Integer> list = t.get(i);
-			nextSum.add(curSum.get(0) + list.get(0));
+			nextSum.add(curSum.get(0) + list.get(0));//j = 0, only one path
 			for(int j=1;j<curSum.size();j++){
 				nextSum.add(Math.min(curSum.get(j-1), curSum.get(j)) + list.get(j));
 			}
-			nextSum.add(curSum.get(curSum.size()-1) + list.get(list.size()-1));
+			nextSum.add(curSum.get(curSum.size()-1) + list.get(list.size()-1));//j = end, only one path
 			curSum = new ArrayList<>(nextSum);
 			nextSum.clear();
 		}
-		
-	
 		return Collections.min(curSum);
 	}
 	public static void main(String[] args){

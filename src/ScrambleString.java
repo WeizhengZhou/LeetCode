@@ -33,8 +33,6 @@ public class ScrambleString {
 				}
 			}
 		}
-		
-
 //		print(dp);
 		return dp[0][0][n];
 	}
@@ -47,7 +45,6 @@ public class ScrambleString {
 //		String s1 = "tea";
 //		String s2 = "tea";
 		
-
 		ScrambleString solu = new ScrambleString();
 		System.out.println(solu.isScramble(s1, s2));
 		

@@ -1,117 +1,86 @@
 
 public class SortList_Failed {
-	public class HeadTail{
-		ListNode head = null;
-		ListNode tail = null;
-		public HeadTail(ListNode head, ListNode tail){
-			this.head = head;
-			this.tail = tail;
+	public ListNode sortList(ListNode head){
+		if(head == null || head.next == null) return head;
+		ListNode dummyHead = new ListNode(0);
+		dummyHead.next = head;
+		
+		int length = length(head);//total length of the list
+		int subLength = 1;//sublist length
+		
+		while(subLength < length){		
+			ListNode preL = dummyHead;
+			while(preL != null && preL.next != null){
+				//preL -> (l -> ....-> preR) -> (r-> ... ->preT) -> t
+				ListNode l = preL.next;//left sublist's head
+				preL.next = null;//disconnect preL and L
+				ListNode preR = skipKNodes(l,subLength-1);//before right sublist
+				if(preR.next == null) {
+					preL.next = l;//connect preL and l
+					break;//right sublist list is null, attention, it is a break not a continue
+				}
+				
+				ListNode r = preR.next;//right sublist's head
+				preR.next = null;//cut off the right sublist
+				
+				ListNode t = skipKNodes(r,subLength-1);//tail of right sublist
+				ListNode postT = t.next;//node after right sublist, might be null
+				t.next = null;
+				
+				t = (t.val > preR.val) ? t:preR;//record merged list's tail 
+				
+				preL.next = merge(l,r);
+				t.next = postT;				
+				preL = t;	
+			}
+			subLength *= 2;
 		}
+		return dummyHead.next;
 	}
-	 public ListNode SortList_Failed(ListNode head){
-		 if(head == null || head.next == null) return head;
-		 ListNode dummyHead = new ListNode(0);
-		 dummyHead.next = head;
-		 
-		 int totalLength = totalLength(head);
-		 int curLength = 1;
-		 
-		 while(curLength < totalLength){
-			 ListNode preL = dummyHead;
-			 while(preL.next != null){
-				 ListNode l = preL.next;
-				 ListNode r = l;
-				 
-				 int count = 0;
-				 while(r.next != null && count < curLength){
-					 count++;
-					 r = r.next;
-				 }	
-				 ListNode aftR = r.next;
-				 
-				 if(l == r) 
-					 break;	
-				 if(preL == dummyHead && r.next == null)
-					 return dummyHead.next;
-				 
-				 System.out.println("A, curLength = " + curLength);
-				 System.out.println("l = " + l.val + ", r = " + r.val);
-				 
-				 ListNode th = new ListNode(0);//temp head
-				 ListNode tt = th;//temp tail
-				 int countL = 0;
-				 int countR = 0;
-				 while(r != null && countL < curLength && countR < curLength){
-					 if(l.val < r.val){
-						 tt.next = l;
-						 ListNode next = l.next;
-						 l.next = null;
-						 l = next;
-						 countL ++;
-					 }
-					 else{
-						 tt.next = r;
-						 ListNode next = r.next;
-						 r.next = null;
-						 r = next;
-						 countR ++;
-					 }
-					 tt = tt.next;
-				 }
-				 System.out.println("B, curLength = " + curLength);
-
-				 while(countL < curLength){
-					 tt.next = l;
-					 ListNode next = l.next;
-					 l.next = null;
-					 l = next;
-					 tt = tt.next;	
-					 countL++;
-				 }
-				 while(r != null && countR < curLength){
-					 tt.next = r;
-					 ListNode next = r.next;
-					 r.next = null;
-					 r = next;
-					 countR++;
-				 }	
-				 System.out.println("C, curLength = " + curLength);
-
-				 preL.next = th.next;
-				 tt.next = aftR;
-				 preL = tt;
-				 
-		 
-				 System.out.println("D, " + tt.val);
-//				 System.out.println("E, " + tt.next.val);
-			 }
-			 System.out.println("---");
-			 print(head);
-			 curLength = curLength * 2;			 
-		 }
-		 return dummyHead.next;
-	 }
-	 private int totalLength(ListNode head){
-		 int count = 0;
+	private ListNode merge(ListNode a, ListNode b){
+		ListNode dummyHead = new ListNode(0);
+		ListNode tail = dummyHead;
+		while(a != null && b != null){
+			if(a.val < b.val){
+				tail.next = a;
+				a = a.next;
+			}
+			else{
+				tail.next = b;
+				b = b.next;
+			}
+			tail = tail.next;
+		}
+		tail.next = (a != null)? a:b;
+		return dummyHead.next;
+	}
+	
+	
+	private ListNode skipKNodes(ListNode l, int k){
+		int count = 0;
+		while(l.next != null && count < k){
+			count++;
+			l = l.next;
+		}
+		return l;		
+	}
+	private int length(ListNode head){
+		 int length = 0;
 		 while(head != null){
-			 count++;
+			 length++;
 			 head= head.next;
 		 }
-		 return count;		 
+		 return length;		 
 	 }
 	
+	
+	
 	public static void main(String[] args){
-//		int[] A = new int[]{1,3,3,1,3,1,3,3,2,3,2,2,1,1,1,3,2,2,1,1,2,2,2,3,3,1,1,2,2,2,1,2,1,1,2,3,3,2,2,3,2,3,2,2,2,1,1,3,2,3,3,1,1,1,2,2,1,2,2,2,2,3,1,3,1,1,1,2,1,2,2,2,1,3,2,2,2,3,3,2,3,3,1,1,2,2,1,2,1,3,2,1,3,3,1,2,1,1,1,1,1,2,1,2,2,2,2,3,3,3,1,1,3,2,1,1,2,1,3,3,2,2,1,3,1,3,1,3,2,2,3,2,3,2,2,1,2,3,1,3,1,2,3,3,2,3,3,3,1,1,2,3,1,2,3,2,1,1,2,3,1,1,3,1,2,2,3,2,1,3,1,2,1,3,2,1,1,2,2,2,1,3,1,3,2,3,3,1,1,3,1,2,1,2,3,1,2,1,1,3,1,3,3,1,1,1,2,2,1,3,1,2,2,3,2,1,3,2,1,3,2,2,3,3,2,2,1,3,2,2,2,2,2,3,2,2,3,1,3,2,1,3,2,1,2,3,3,3,1,2,2,3,1,1,2,2,3,2,1,1,1,1,1,3,2,2,2,1,3,2,1,2,3,2,1,1,2,1,3,3,1,3,1,2,2,1,2,3,2,3,3,1,2,3,2,2,3,3,2,1,3,2,2,2,3,3,3,1,1,2,1,1,2,3,3,3,1,3,2,2,1,2,2,1,2,3,1,3,2,2,3,3,3,1,2,3,2,1,3,1,1,2,2,1,1,1,2,2,3,1,3,1,2,3,3,3,2,2,3,1,1,1,3,2,1,1,3,1,2,3,3,3,2,1,2,3,2,3,2,1,3,2,2,2,2,1,1,3,1,1,1,3,2,2,2,1,2,3,2,3,2,2,1,2,3,2,1,1,3,1,3,3,1,1,1,1,1,2,3,3,3,1,3,2,2,3,1,1,3,1,1,1,3,1,1,2,2,2,1,1,1,1,2,1,3,3,3,1,2,2,2,2,3,3,1,2,2,3,1,3,1,2,1,2,2,3,3,1,3,3,2,1,3,1,1,3,1,2,3,3,3,3,1,1,3,3,3,3,2,2,2,1,1,3,2,2,2,3,1,3,3,3,1,1,3,1,3,2,3,1,2,3,2,2,3,3,3,1,2,1,2,1,2,3,1,2,2,2,1,1,1,2,2,1,2,1,1,1,3,2,1,2,3,2,2,2,1,2,3,2,2,1,3,3,3,1,2,3,3,1,1,3,3,1,1,2,1};
-//		int[] A = new int[]{3,1,2};
+		SortList_Failed solution = new SortList_Failed();
 		int[] A = new int[]{6,5,4,3,2,1};
-		ListNode head = new ListNode().createList(A);
-		
-		SortList_Failed SortList_Failed = new SortList_Failed();
-		
-		ListNode sorted = SortList_Failed.SortList_Failed(head);
-		SortList_Failed.print(sorted);
-
-
+		ListNode head = new ListNode().createList(A);	
+		ListNode sorted = solution.sortList(head);
+		solution.print(sorted);
 	}
 	 private void print(ListNode head){
 	    	while(head != null){

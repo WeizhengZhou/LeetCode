@@ -6,22 +6,20 @@ public class RemoveDuplicatesfromSortedArrayII {
 		if(A == null) return 0;
 		if(A.length == 1) return 1;
 		
-		int p = 0;
+		int preIndex = 0;
 		int count = 1;
 		
 		for(int i=1;i<A.length;i++){
-			if(A[i] != A[p]){
-				A[++p] = A[i];
-				count = 1;
+			if(A[i] != A[preIndex]){//found new number 
+				A[++preIndex] = A[i];//set value
+				count = 1;//set count = 1
 			}
-			else if(count < 2){
-				A[++p] = A[i];
+			else if(count < 2){//less than two 
+				A[++preIndex] = A[i];
 				count++;
 			}
-	
-//			System.out.println("i = " + i + ", p = " + p + ", count = " + count+ ", " + Arrays.toString(A));
 		}
-		return p+1;
+		return preIndex+1;
 
 	}
 	public static void main(String[] args){

@@ -1,19 +1,6 @@
 import java.util.*;
 public class WordBreak {
-//	int count = 0;
-//	public boolean wordBreak(String s, Set<String> dict) {
-//		if(s == null || dict == null) return false;
-//		if(s.equals("")) return true;
-//		
-//		for(int i =0;i<s.length();i++){
-//			System.out.println(s.length() + ", " + i + ", " + count++);
-//			if(dict.contains(s.substring(0,i+1)) && wordBreak(s.substring(i+1,s.length()), dict)){
-//				return true;		
-//			}
-//		}
-//		return false;
-//	}
-	
+
 	public boolean wordBreak(String s, Set<String> dict) {
 		if(s == null || dict == null) return false;
 		int n = s.length();

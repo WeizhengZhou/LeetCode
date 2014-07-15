@@ -2,29 +2,26 @@
 public class RemoveDuplicatesfromSortedListII {
 	public ListNode deleteDuplicates(ListNode head) {
 		if(head == null || head.next == null) return head;
-		ListNode dummyHead = new ListNode(head.val -1);
-		dummyHead.next = head;
 		
-		ListNode pre = dummyHead;
-		ListNode cur = head;
+		ListNode dh = new ListNode(head.val-1);
+		ListNode tail = dh;
+		tail.next = head;
+		
+		int value = head.val;
+		ListNode cur = head.next;
 		while(cur != null){
-//			System.out.print("pre = " + pre.val + ", ");
-//			System.out.print("remain list = ");
-//			head.printList(cur);
-			while(cur.next != null && cur.val == cur.next.val){
+			while(cur != null && cur.val == value){
 				cur = cur.next;
 			}
-			if(pre.next == cur){//cur.val != cur.next.val
-				pre = cur;
-				cur = cur.next;
-			}
-			else{
-				pre.next = cur.next;//delete pre.next to cur
-				cur = cur.next;				
-			}	
-			
-		}	
-		return dummyHead.next;
+			tail.next = cur;
+			tail = tail.next;
+			value = 
+		}
+		
+		
+		
+		
+		
 
 	}
 	public static void main(String[] args){

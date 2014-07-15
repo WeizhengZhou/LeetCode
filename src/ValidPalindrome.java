@@ -6,48 +6,46 @@ public class ValidPalindrome {
 		int i = 0;
 		int j = s.length()-1;
 		while(i <= j){
-			int a = nextAlpha(s,i);
-			int b = preAlpha(s,j);
-			
-			//guard for "   " like string
-			if(a > b)
-				return true;
-			
-			if(!s.substring(a,a+1).equals(s.substring(b,b+1)))
+			i = nextAlphaNumericIndex(s,i);
+			j = preAlphaNumericIndex(s,j);						
+			if(i >= j)//e.g. s = "   "
+				return true;			
+			if(s.charAt(i) != s.charAt(j))
 				return false;
-			i = a + 1;
-			j = b - 1;			
+			i++;
+			j--;
 		}
 		return true;
-		
-
 	}
-	private int nextAlpha(String s, int i){
-		for(int k=i;k<s.length();k++){
-			String t = s.substring(k,k+1);
-			if(t.compareTo("z") <= 0 && t.compareTo("a") >= 0)
-				return k;
-			//alhanumeric string, not only alpha
-			if(t.compareTo("9") <= 0 && t.compareTo("0") >= 0)
+	private int nextAlphaNumericIndex(String s, int i){
+		//find the index of next alphanumeric character
+		for(int k=i;k<s.length();k++){			
+			if(isAlphaNumeric(s.charAt(k)))
 				return k;
 		}
 		return s.length();
 		
 	}
-	private int preAlpha(String s, int j){
+	private int preAlphaNumericIndex(String s, int j){
+		//find the index of previous alphanumeric character
 		for(int k=j;k>=0;k--){
-			String t = s.substring(k,k+1);
-			if(t.compareTo("z") <= 0 && t.compareTo("a") >= 0)
-				return k;
-			if(t.compareTo("9") <= 0 && t.compareTo("0") >= 0)
+			if(isAlphaNumeric(s.charAt(k)))
 				return k;
 		}
 		return 0;
 	}
+	private boolean isAlphaNumeric(char c){
+		if(c <= 'z' && c >= 'a')
+			return true;
+		else if(c <= '9' && c >= '0')
+			return true;
+		else 
+			return false;
+	}
 	public static void main(String[] args){
 		String s = "A man, a plan, a canal: Panama";
-		s = "race a car";
-		s = "1a2";
+//		s = "race a car";
+//		s = "1a2";
 	    ValidPalindrome solution = new  ValidPalindrome();
 	    System.out.println(solution.isPalindrome(s));		
 	}

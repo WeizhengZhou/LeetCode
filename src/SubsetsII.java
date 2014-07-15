@@ -21,7 +21,7 @@ public class SubsetsII {
     		lists.add(list);
     		return;
     	}
-    	//count how many num[i]
+    	//count how many num[i]'s duplicates
     	int count = 0;
     	int k = i;
     	while(k < num.length && num[i] == num[k]){

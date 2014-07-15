@@ -12,28 +12,28 @@ public class SurroundedRegions {
 		if(board == null || board.length == 0 || board[0].length == 0) return;
 		this.m = board.length;
 		this.n = board[0].length;
-		this.visited = new boolean[m][n];
+		this.visited = new boolean[m][n];//bfs visited
 		this.board = board;
 	
 		for(int j=0;j<n;j++){
-			if(board[0][j] == 'O' && visited[0][j] == false)
+			if(board[0][j] == 'O' && visited[0][j] == false)//start from top boundary 
 				bfs(0,j);
-			if(board[m-1][j] == 'O' && visited[m-1][j] == false)
+			if(board[m-1][j] == 'O' && visited[m-1][j] == false)//start from bottom boundary
 				bfs(m-1,j);
 		}	
 		for(int i=0;i<m;i++){
-			if(board[i][0] == 'O' && visited[i][0] == false)
+			if(board[i][0] == 'O' && visited[i][0] == false)//start from left boundary
 				bfs(i,0);
-			if(board[i][n-1] == 'O' && visited[i][n-1] == false)
+			if(board[i][n-1] == 'O' && visited[i][n-1] == false)//start from right boundary
 				bfs(i,n-1);
 		}	
-		setX();
+		flipOtoX();
 //		print(visited);
 		print(board);
     }
 	private void bfs(int x, int y){
-		Queue<Integer> row = new LinkedList<>();
-		Queue<Integer> column = new LinkedList<>();
+		Queue<Integer> row = new LinkedList<>();//visited row index
+		Queue<Integer> column = new LinkedList<>();//visited column index
 		row.add(x);
 		column.add(y);
 		while(!row.isEmpty()){
@@ -46,17 +46,15 @@ public class SurroundedRegions {
 				row.add(i);column.add(j-1);
 				row.add(i);column.add(j+1);
 			}		
-		}
-		
+		}		
 	}
 
-	private void setX(){
-		for(int i=0;i<m;i++){
-			for(int j=0;j<n;j++){
+	private void flipOtoX(){
+		for(int i=0;i<m;i++)
+			for(int j=0;j<n;j++)
 				if(board[i][j] == 'O' && visited[i][j] == false)
 					board[i][j] = 'X';
-			}
-		}
+	
 	}
 	public static void main(String[] args){
 //		char[][] board = new char[][]{{'X','X','X','X','',''},
@@ -67,7 +65,7 @@ public class SurroundedRegions {
 //                                      {'O','X','O','X','O','X'},
 //                                      {'X','O','X','O','X','O'},
 //                                      {'O','X','O','X','O','X'}};
-		char[][] board = new char[][]{{'O','O'},{'O','O'}};
+		char[][] board = new char[][]{{'O','X'},{'X','X'}};
 		SurroundedRegions  s = new SurroundedRegions ();
 		s.solve(board);
 		

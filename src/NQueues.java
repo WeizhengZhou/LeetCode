@@ -5,11 +5,9 @@ public class NQueues {
     	List<String[]> list = new ArrayList<String[]>();
     	nQueues_helper(board,0,n,list);
     	print(list);
-    	return list;
-        
+    	return list;      
     }
     public void nQueues_helper(boolean[][] board, int row, int n, List<String[]> list){
-
     	if(row == n){
     		String[] s = new String[n];
     		for(int i=0;i<n;i++){
@@ -28,15 +26,13 @@ public class NQueues {
     	
     	for(int j=0;j<n;j++){
     		if(isValid(board,row,j)){  			
-//    	    	System.out.println("i = " + row + ", j = " + j);
     	    	board[row][j] = true;
     			nQueues_helper(board,row+1,n,list);
     			board[row][j] = false;
     		}  		
     	}    	
     }
-    public boolean isValid(boolean[][] board, int i, int j){
-    	
+    public boolean isValid(boolean[][] board, int i, int j){    	
     	for(int k =0;k<board.length;k++){
     		if(board[i][k] == true || board[k][j] == true)
     			return false;
@@ -44,8 +40,7 @@ public class NQueues {
     	int m = i; int n = j;
     	while(m < board.length && n < board.length){
     		if(board[m++][n++] == true)
-    			return false;
-    	
+    			return false;  	
     	}
     	m = i;n = j;
     	while(m < board.length && n >= 0){

@@ -18,8 +18,7 @@ public class PalindromePartitioningII {
 					isPal[i][j] = isPal[i+1][j-1];				
 				}
 			}
-		}
-		
+		}		
 		for(int i=0;i<n;i++)
 			minCuts[i] = i;//min cuts at most i-1
 		for(int i=0;i<n;i++){//s[0...i]

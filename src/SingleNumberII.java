@@ -1,10 +1,5 @@
 
-public class SingleNumberII {
-	/**
-	 * @see http://zhaohongze.com/wordpress/2013/12/04/leetcode-single-number-ii/
-	 * @param A
-	 * @return
-	 */
+public class SingleNumberII {	
 	public int singleNumber(int[] A) {
 		//ones' and twos' dth digit records the occurrence of "1" in all numbers in A
 		//if one[d] = 1, two[d] = 0, total number of "1" occurred on digit d is 1
@@ -19,10 +14,6 @@ public class SingleNumberII {
 			int mask = ~(ones & twos);
 			ones &= mask;
 			twos &= mask;
-//			System.out.println("i =" + i);
-//			System.out.println("ones = " + Integer.toBinaryString(ones));
-//			System.out.println("twos = " + Integer.toBinaryString(twos));
-//			System.out.println("mask = " + Integer.toBinaryString(mask));
 		}
 		return ones;
 	}
@@ -32,5 +23,16 @@ public class SingleNumberII {
 		s.singleNumber(A);
 		
 	}
-
+//	public class QBit{
+//		int one;
+//		int two;
+//		public QBit(){
+//			one = 0;
+//			two = 0;
+//		}
+//		public void plusOne(int x){
+//			two = two | (one & x);
+//			one = one ^ x;
+//		}
+//	}
 }

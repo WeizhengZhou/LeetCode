@@ -1,40 +1,49 @@
 import java.util.*;
 
 public class PalindromePartitioning {
+
+	private String s = null;
+	private boolean[][] isPal = null;//isPal[i][j] = true if s[i...j] is a palindrome
 	public List<List<String>> res = new ArrayList<List<String>>();
 	public List<List<String>> partition(String s) {
-		if(s == null)
-			return res;
+		if(s == null) return res;	
+		this.s = s;
+		this.buildIsPalTable();
 		List<String> list = new ArrayList<>();
-		aux(s, 0, list);
+		aux(0, list);
 		return res;
-
 	}
-	public void aux(String s, int start, List<String> list){
+	private void buildIsPalTable(){
+		int n = s.length();
+		this.isPal = new boolean[n][n];
+		for(int i=1;i<n;i++)
+			isPal[i][i-1] = true;//empty string is palindrome
+		for(int i=0;i<n;i++)
+			isPal[i][i] = true;//single character is palindrome
+		for(int len=2;len<=n;len++){//length from 2 to n
+			for(int i=0;i<=n-len;i++){//i from 0 to n-1
+				int j = i+len-1;
+				if(s.charAt(i) == s.charAt(j)){
+					isPal[i][j] = isPal[i+1][j-1];				
+				}
+			}
+		}	
+	}
+	public void aux(int start, List<String> list){
 		if(start == s.length()){
 			res.add(new ArrayList<String>(list));
 			return;
 		}
 		//partition the string into two parts, the first half is a palindrome
-		for(int end = start +1 ;end <= s.length(); end++){
-			if(isPalindrome(s, start, end)){
-				list.add(new String(s.substring(start, end)));
-				aux(s, end, list);
+		for(int end=start;end < s.length();end++){
+			if(isPal[start][end] == true){
+				list.add(new String(s.substring(start, end+1)));
+				aux(end+1, list);
 				list.remove(list.size()-1);
 			}
 		}	
 	}
-	public boolean isPalindrome(String s, int start, int end){
-		int i = start;
-		int j = end-1;
-		while(i <= j){
-			if(!s.substring(i,i+1).equals(s.substring(j,j+1)))
-				return false;
-			i++;
-			j--;
-		}
-		return true;
-	}
+
 	public static void main(String[] args){
 		String t = "abbacdc";
 		PalindromePartitioning solution = new PalindromePartitioning ();

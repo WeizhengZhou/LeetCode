@@ -1,13 +1,11 @@
 import java.util.*;
 
 public class PascalsTriangleII {
-	public List<Integer> getRow(int rowIndex) {
-		
+	public List<Integer> getRow(int n) {		
 		List<Integer> list = new ArrayList<Integer>();	
 		list.add(1);
-		if(rowIndex == 0) return list;
-		for(int i=1;i<rowIndex;i++){			
-			long cur = (long) list.get(i-1) * (long) (rowIndex -i +1) / (long) i;
+		for(int k=1;k<n;k++){			
+			long cur = (long) list.get(k-1) * (long) (n -k +1) / (long) k;
 			list.add((int) cur);	
 		}
 		list.add(1);

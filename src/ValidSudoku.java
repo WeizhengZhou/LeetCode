@@ -10,13 +10,12 @@ public class ValidSudoku {
     	for(int i=0;i<9;i++){
     		BitSet bt = new BitSet(9);
         	for(int j=0;j<9;j++){
-        		if(board[i][j] != '.'){
-            		int v = board[i][j] - '0';
-            		if(bt.get(v) == false)
-            			bt.set(v);
-            		else 
-            			return false;      			
-        		}
+        		if(board[i][j] == '.') continue;
+        		int v = board[i][j] - '1';
+        		if(bt.get(v) == false && v < 9 && v >= 0)
+        			bt.set(v);
+        		else
+        			return false;     		
         	}
     	}
     	return true;
@@ -25,17 +24,15 @@ public class ValidSudoku {
     	for(int j=0;j<9;j++){
     		BitSet bt = new BitSet(9);
         	for(int i=0;i<9;i++){
-        		if(board[i][j] != '.'){
-        			int v = board[i][j] - '0';
-            		if(bt.get(v) == false)
-            			bt.set(v);
-            		else 
-            			return false;	
-        		}
+        		if(board[i][j] == '.') continue;
+        		int v = board[i][j] - '1';
+        		if(bt.get(v) == false && v < 9 && v >= 0)
+        			bt.set(v);
+        		else
+        			return false;
         	}
     	}
-    	return true;
-    	
+    	return true;   	
     }
     private boolean isBlockValid(char[][] board){
     	for(int i=0;i<3;i++){
@@ -50,13 +47,12 @@ public class ValidSudoku {
     	BitSet bt = new BitSet(9);
     	for(int i=0;i<3;i++){
     		for(int j=0;j<3;j++){
-    			if(board[m+i][n+j] != '.'){
-    				int v = board[m+i][n+j] - '0';
-        			if(bt.get(v) == false)
-        				bt.set(v);
-        			else
-        				return false;
-    			}
+    			if(board[i][j] == '.') continue;
+        		int v = board[i][j] - '1';
+        		if(bt.get(v) == false && v < 9 && v >= 0)
+        			bt.set(v);
+        		else
+        			return false;
     		}
     	}
     	return true;
@@ -70,7 +66,7 @@ public class ValidSudoku {
     			          {'6','.','.','.','.','.','.','.','.'},
     			          {'7','.','.','.','.','.','.','.','.'},
     			          {'8','.','.','.','.','.','.','.','.'},
-    			          {'9','.','.','.','.','.','.','.','.'}};
+    			          {'1','.','.','.','.','.','.','.','.'}};
 //    	System.out.println(Character.getNumericValue(board[0][1])); 
     	ValidSudoku solution = new ValidSudoku();
     	System.out.println(solution.isValidSudoku(board));

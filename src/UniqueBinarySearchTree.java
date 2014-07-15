@@ -12,10 +12,23 @@ public class UniqueBinarySearchTree {
 		}
 		return numTrees;	
 	}
+	public int numTrees_dp(int n) {
+		if(n < 0) return 0;
+		int[] nTrees = new int[n+1];//number of unique trees with i nodes
+		nTrees[0] = 1;
+		nTrees[1] = 1;
+		for(int i=2;i<=n;i++){
+			int res = 0;
+			for(int k=0;k<=i-1;k++){
+				res += nTrees[k]*nTrees[i-k-1];
+			}
+			nTrees[i] = res;
+		}
+		return nTrees[n];	
+	}	
 	public static void main(String[] args){
-		int n = 2;
+		int n = 8;
 		UniqueBinarySearchTree s = new UniqueBinarySearchTree();
-		System.out.println(s.numTrees(n));
-		
+		System.out.println(s.numTrees(n));		
 	}
 }

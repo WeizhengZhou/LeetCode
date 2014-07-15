@@ -11,27 +11,24 @@ public class RestoreIPAddresses {
 		
 	}
 	private void helper(String s, int index, int d, StringBuilder sb, List<String> res){
+		int nDigitsRemain = s.length() - index;
 
-		int digitsRemain = s.length() - index;
-		
-		if(digitsRemain > 3*(4-d) || digitsRemain < (4-d))
-			return;
-		
+		if( nDigitsRemain >  3*(4-d)) return;
+		if( nDigitsRemain < (4-d)) return;
 		if(d == 4){
 			res.add(sb.toString());	
 			return;
 		}	
-        int length = Math.min(3, s.length() - index);	
+        int length = Math.min(3, nDigitsRemain);	
 		for(int i=0;i<length;i++){				
 			int t = Integer.parseInt(s.substring(index,index+i+1));
 			if(t>=0 && t<=255){
 				StringBuilder sbn = new StringBuilder(sb);
 				sbn.append(t);
-				if(d < 3)
-					sbn.append(".");				
+				if(d < 3) sbn.append(".");//does not append . for last one				
 				helper(s,index+i+1,d+1,sbn,res);				
 			}
-			if(t == 0)
+			if(t == 0)//fisrt digit is zero, cannot parse two or three digits
 				break;
 		}	
 	}

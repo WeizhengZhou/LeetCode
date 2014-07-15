@@ -2,59 +2,52 @@
 import java.util.*;
 
 public class SubstringwithConcatenationofAllWords {
-	private String S = null;
-	private String[] L = null;
+
     public List<Integer> findSubstring(String S, String[] L) {
     	if(S == null || L == null) 
     		return new ArrayList<>();
-    	this.S = S;
-    	this.L = L;
-    	
-    	Map<String,Integer> map = new HashMap<String,Integer>();//count each string's occurrence 
+    	//expected number of keys to be found
+    	Map<String, Integer> expected = new HashMap<>(); 	
     	for(int i=0;i<L.length;i++){
-    		if(!map.containsKey(L[i]))
-    			map.put(L[i],1);
+    		if(!expected.containsKey(L[i]))
+    			expected.put(L[i],1);
     		else
-    			map.put(L[i], map.get(L[i])+1);
+    			expected.put(L[i], expected.get(L[i])+1);
     	}	
     	
-    	List<Integer> res = new ArrayList<>();
-    	for(int i=0;i<=S.length() - L.length * L[0].length();i++){
-    		if(isSubstring(i, new HashMap<String, Integer>(map)))
-    			//if S[i...] is a Concatenation of All Words of all words of L[] 
-    				res.add(i);	
-    	}
-    	   	
+    	int wordLength = L[0].length();//length of words in L
+    	Map<String, Integer> real = new HashMap<>();//real number of keys found in S
+    	List<Integer> res = new ArrayList<>();//result
+    	for(int start=0;start<=S.length()-L.length*L[0].length();start++){//until remaining substring is longer than L's total characters   		
+    		real.clear();//clear real counter
+    		int nWords = 0;//index of words in L
+    		while(nWords < L.length){
+    			String cur = S.substring(start+nWords*wordLength, start+(nWords+1)*wordLength);//current word
+    			if(!expected.containsKey(cur))//no cur in L
+    				break;
+    			else if(!real.containsKey(cur))//not found cur before
+    				real.put(cur, 1);
+    			else if(real.get(cur) < expected.get(cur))//not exceed expected 
+    				real.put(cur, real.get(cur)+1);
+    			else//more than expected 
+    				break;
+    			nWords++;
+    		}    	
+    		if(nWords == L.length)
+    			res.add(start);
+    	}   	   	
     	return res;
     }
-    private boolean isSubstring(int i, Map<String, Integer> map){
-    	int step = L[0].length();    	
-    	String cur = null;
-    	while(i <= S.length()-step){//not i < S.length()
-    		cur = S.substring(i,i+step);
-    		if(!map.containsKey(cur)) break;
-    		else{
-    			int count = map.get(cur);
-        		if(count == 1)
-        			map.remove(cur);
-        		else
-        			map.put(cur, count-1);
-    		}   		
-    		i += step;		
-    	}
-    	if(map.size() == 0) return true;//all words found and cleared 
-    	else return false;//clear process being interrupted    	  	
-    }
-   
+    
     
 
     public static void main(String[] args){
-//    	String S = "barfoothefoobarman";	
-//    	String[] L = new String[]{"foo","bar"};
+    	String S = "barfoothefoobarman";	
+    	String[] L = new String[]{"foo","bar"};
 //    	String S = "aaa";
 //    	String[] L = new String[]{"a","a"};
-    	String S = "acaacc";
-    	String[] L = new String[]{"ca","ac"};
+//    	String S = "acaacc";
+//    	String[] L = new String[]{"ca","ac"};
     	
     	SubstringwithConcatenationofAllWords solution = new SubstringwithConcatenationofAllWords();
     

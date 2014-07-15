@@ -1,42 +1,38 @@
 
 public class ReverseLinkedListII {
 	public ListNode reverseBetween(ListNode head, int m, int n) {
-		if(m >= n) return head;
 		
-		ListNode revHead = null;//head of reversed list
-		ListNode revTail = null;//tail of reversed list
+		ListNode revHead = null;//head of the reversed list
+		ListNode revTail = null;//tail of the reversed list
 		ListNode beforeM = null;//before node m
 		ListNode afterN = null;//after node n
 		
 		ListNode cur = head;
-		ListNode next = null;
-		int count = 0;
+		ListNode next = null;//cur.next
+		int count = 0;//number of nodes traversed 
 		while(cur != null){
 			count++;			
-			next = cur.next;//record next			
-			
-			if(count+1 == m){//record node before node m
+			next = cur.next;//store cur.next
+			if(count+1 == m){//store node before m
 				beforeM = cur;
 			}
 			else if(count == m){//start to reverse list
-				cur.next = null;
-				revTail = cur;
+				cur.next = null;//isolate cur node
+				revTail = cur;//set reversed list's head and tail
 				revHead = cur;
 			}
-			else if(count > m && count <= n){//reverse list
+			else if(count > m && count <= n){//reverse the middle list
 				cur.next = revHead;
 				revHead = cur;
 			}
-			else if(count == n+1){	//record node after n
+			else if(count == n+1){//store node after n
 				afterN = cur;
-			}
-			
+			}		
 			cur = next;
 		}
-		//cat reverse list with list after n
-		revTail.next = afterN;
-		//cat list before m with reversed list
-		if(beforeM == null)
+		
+		revTail.next = afterN;//append afterN to reversed list's tail
+		if(beforeM == null)//beforeM might be null, m = 1
 			return revHead;
 		else{
 			beforeM.next = revHead;

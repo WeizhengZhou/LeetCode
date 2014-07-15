@@ -1,5 +1,7 @@
 import java.util.*;
-public class WordLadder {	
+
+
+public class WordLadder_Test {
 	public int ladderLength(String start, String end, Set<String> dict) {
 		if(start == null || end == null || dict == null || dict.size() == 0) return 0;
 		Map<String, Integer> visited = new HashMap<>();
@@ -35,18 +37,18 @@ public class WordLadder {
 		}
 		return 0;
 	}
-	
 	public static void main(String[] args){
-		String start = "hit";
-		String end = "cog";
+		String start = "hot";
+		String end = "dog";
 		Set<String> dict = new HashSet<String>();
 		dict.add("hot");
-		dict.add("dot");
+//		dict.add("dot");
 		dict.add("dog");
-		dict.add("lot");
-		dict.add("log");
-		WordLadder solution = new WordLadder();
+//		dict.add("lot");
+//		dict.add("log");
+		WordLadder_Test solution = new WordLadder_Test();
 		
 		System.out.println(solution.ladderLength(start, end, dict));
 	}
+
 }

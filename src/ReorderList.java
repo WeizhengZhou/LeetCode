@@ -1,73 +1,61 @@
 
-import java.util.*;
 public class ReorderList {
 	public void reorderList(ListNode head) {
-		//list' length <= 2
-		if(head == null || head.next == null || head.next.next == null) return;
-		ListNode tail = head;
-		ListNode middle = head;
-		
-		//find middle node
-		while(tail != null && tail.next != null){
+	
+		ListNode tail = head;//go to tail of the list
+		ListNode middle = head;//go to middle of the list
+				
+		while(tail != null && tail.next != null){//when terminate, middle points to the middle node
 			middle = middle.next;
 			tail = tail.next.next;
 		}
-		//cut list into two halves, 
-		ListNode left = head;
-		ListNode right = middle.next;
-		middle.next = null;
 		
-		right = reverse(right);
-		merge(left, right);
+		ListNode left = head;//cut the list into two halves, 
+		ListNode right = middle.next;
+		middle.next = null;//cut at middle
+		
+		right = reverse(right);//reverse right half
+		merge(left, right);//merge left half and right half alternatively
 	
 	}
 	
-	public ListNode reverse(ListNode cur){
-		if(cur == null || cur.next == null) return cur;
-		ListNode head = cur;
-		ListNode next = cur.next;
-		cur.next = null;
-		cur = next;
-		while(cur != null){
-			next = cur.next;
-			cur.next = head;
-			head = cur;
-			cur = next;
-		}
+	public ListNode reverse(ListNode n){
+		if(n == null || n.next == null) return n;		
+		ListNode head = n;//head of the reversed list
+		ListNode next = n.next;//store n.next
+		head.next = null;//
+		n = next;//move to next;
 		
-		return head;	
+		while(n != null){
+			next = n.next;
+			n.next = head;
+			head = n;
+			n = next;
+		}
+		return head;			
 	}
 	public ListNode merge(ListNode a, ListNode b){
-		ListNode head = new ListNode(0);
-		ListNode tail = head;
-		
-		ListNode aNext = null;
-		ListNode bNext = null;
-		
+		ListNode dh = new ListNode(0);
+		ListNode tail = dh;
+		boolean isANext = true;
 		while(a != null && b != null){
-			aNext = a.next;
-			bNext = b.next;
-		    tail.next = a;
-			a.next = b;
-			b.next = null;
-			tail = b;
-			a = aNext;
-			b = bNext;
-			
-			
+			if(isANext == true){
+				tail.next = a;
+				a = a.next;
+				isANext = !isANext;
+			}
+			else{
+				tail.next = b;
+				b = b.next;
+				isANext = !isANext;
+			}
+			tail = tail.next;				
 		}
-		if(a != null)
-			tail.next = a;
-		if(b != null)
-			tail.next = b;
-	
-		return head.next;
-		
+		tail.next = (a != null)? a:b;
+		return dh.next;		
 	}
     public static void main(String[] args){
-    	ListNode head = new ListNode().createList(new int[]{1,2,3,4,5});
-    	
-    	
+    	ListNode head = new ListNode().createList(new int[]{1,2,3});  	
     	ReorderList solution = new ReorderList();
 
     	solution.reorderList(head);

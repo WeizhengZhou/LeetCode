@@ -18,15 +18,13 @@ public class RecoverBinarySearchTree {
 		TreeNode peak = null;
 		TreeNode valley = null;
 		
+		TreeNode cur = root;	
 		TreeNode l = new TreeNode(Integer.MIN_VALUE);	
 		TreeNode m = new TreeNode(Integer.MIN_VALUE);	
-		TreeNode r = new TreeNode(Integer.MIN_VALUE);	
-		
-		TreeNode cur = root;
-		
-		Stack<TreeNode> stack = new Stack<>();
-		//push a max value to make right boundary easier	
-		stack.push(new TreeNode(Integer.MAX_VALUE));
+		TreeNode r = cur;	
+				
+		Stack<TreeNode> stack = new Stack<>();	
+		stack.push(new TreeNode(Integer.MAX_VALUE));//push a max value to make right boundary easier	
 		while(cur != null || !stack.isEmpty()){
 			if(cur != null){
 				stack.push(cur);
@@ -34,31 +32,20 @@ public class RecoverBinarySearchTree {
 			}
 			else{
 				cur = stack.pop();
-//				System.out.println(cur.val+ ", ");
-				r = cur;
-				//find a peak, and mark it
-				if(l.val <= r.val && m.val > l.val && m.val > r.val){					
-					peak = m;
-//					System.out.println("find peak : " + peak.val);
-				}
-				//find a valley, and mark it 
-				else if(l.val <= r.val && m.val < l.val && m.val < r.val){
-					
-					valley = m;
-//					System.out.println("find valley : " + valley.val);
-				}
-				//move l, m and r to next in-order position 
-				l = m;
+				r = cur;			
+				if(l.val <= r.val && m.val > l.val && m.val > r.val)//m is a peak					
+					peak = m;				
+				else if(l.val <= r.val && m.val < l.val && m.val < r.val)//m is a valley
+					valley = m;				
+				l = m;//move l, m and r to next in-order position 
 				m = r;
-				r = cur;
 				cur = cur.right;
 			}
 		}
-//		System.out.println("Before recover : " + root);
-		int v = peak.val;
+		
+		int v = peak.val;//swap peak and valley
 		peak.val = valley.val;
 		valley.val = v;
-//		System.out.println("After recover : " + root);
 	}
 	public static void main(String[] args){
 		TreeNode root = new TreeNode(3);

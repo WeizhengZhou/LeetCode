@@ -7,25 +7,25 @@ public class RotateList {
 		k = k%length;
 		if(k == 0) return head;
 		
-		ListNode l = head;
-		ListNode r = head;
+		ListNode l = head;//finally point to the previous node of new head
+		ListNode r = head;//finally point to the tail of the list
 		
-		while(r.next != null){
+		while(r.next != null){//at termination, l = new head's previous node
 			if(k == 0)
 				l = l.next;
 			else
 				k--;
-				r = r.next;
+			r = r.next;
 		}
 		
-		r.next = head;
-		head = l.next;
-		l.next = null;
+		r.next = head;//connect tail to head
+		head = l.next;//assign new head
+		l.next = null;//new tail.next = null
 		
 		return head;
 
 	}
-	public int length(ListNode head){
+	public int length(ListNode head){//get the length of the list
 		int l = 0;
 		while(head != null){
 			l++;

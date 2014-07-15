@@ -22,24 +22,21 @@ public class SortColors {
 			else
 				A[i] = 2;
 		}
-
 	}
 	public void sortColors_2(int[] A){
 		int l = -1; 
 		int r = A.length;
-		int i = 0;
-		while(i < r){
-			if(A[i] == 0){
-				swap(A,++l,i);
-				i++;				
+		int k = 0;
+		while(k < r){
+			if(A[k] == 0){
+				swap(A,++l,k);
+				k++;				
 			}
-			else if(A[i] == 2){
-				swap(A,i,--r);
+			else if(A[k] == 2){
+				swap(A,k,--r);
 			}
 			else
-				i++;				
-//			System.out.println("i = " + i + ", " + Arrays.toString(A));
-//			System.out.println("l = " + l + ", r = " + r);
+				k++;				
 		}
 	}
 	private void swap(int[] A, int i, int j){

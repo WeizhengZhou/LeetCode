@@ -7,23 +7,23 @@ public class SudokuSolver {
 		if(board == null || board.length != 9 || board[0].length != 9) return;
 		this.board = board;
 		solve(0,0);		
-//		print(this.board);	
+		print(this.board);	
     }
 	private boolean solve(int i, int j){
-		if(i == 9 || j == 9) 
+		if(i == 9) 
 			return true;
 		if(board[i][j] != '.') 
-			return solve(i+(j+1)/9, (j+1)%9);//next point
+			return solve(i+(j+1)/9, (j+1)%9);//solve next element
 		else{					
-			for(int k=1;k<=9;k++){
+			for(int k=1;k<=9;k++){//try 1-9
 				board[i][j] = Integer.toString(k).charAt(0);//set value			
-				//if does not violate current row, column and subblock, solve next position
+				//if does not violate current row, column and sub-block, solve next position
 				if(isRowValid(board,i) && isColumnValid(board,j) 
 				   && isSubBlockValid(board, i/3,j/3) && solve(i+(j+1)/9, (j+1)%9)){
-					return true;//if next position is correct			
+					return true;		
 				}					
 			}
-			//try all possibilities, found no solution, roll back, and return false
+			//tried 1-9, found no solution, roll back, and return false
 			board[i][j] = '.';//remember to roll back
 			return false;
 		}			
@@ -41,8 +41,7 @@ public class SudokuSolver {
 		}   	
     	return true;
     }
-    private boolean isColumnValid(char[][] board, int column){
-    	
+    private boolean isColumnValid(char[][] board, int column){   	
     	BitSet bt = new BitSet(9);
     	for(int i=0;i<9;i++){
     		if(board[i][column] != '.'){

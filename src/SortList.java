@@ -1,56 +1,47 @@
 
 public class SortList {
+	
 	public ListNode sortList(ListNode head){
-		if(head == null || head.next == null) return head;
-		ListNode dummyHead = new ListNode(0);
+		int totalLength = length(head);//total length of the list
+		int subListLength = 1;//sublist's length, start with 1
+				
+		ListNode preTail, leftHead, leftTail, rightHead, rightTail, postHead;
+		ListNode dummyHead = new ListNode(0);//dummy head 
 		dummyHead.next = head;
 		
-		int length = length(head);
-		int subLength = 1;
-		
-		while(subLength < length){		
-			ListNode preL = dummyHead;
-			while(preL != null && preL.next != null){
-				//preL -> (l -> ....-> preR) -> (r-> ... ->preT) -> t
-				ListNode l = preL.next;//left sublist's head
-				preL.next = null;
+		while(subListLength < totalLength){//until sublist's length is larger than total length
+			preTail = dummyHead;//previous sublist's tail			
+			leftHead = preTail.next;//left sublist'head	
+			while(leftHead != null){	
+				leftTail  = skipKNodes(leftHead,subListLength-1);//left sublist's tail
+				rightHead = leftTail.next;//right sublist' head
+				if(rightHead == null) break;//right sublist is empty	
+				rightTail = skipKNodes(rightHead,subListLength-1);//right sublist' tail
+				postHead = rightTail.next;//next sublist' head
 				
-				ListNode preR = skipKNodes(l,subLength-1);//before right sublist
-				if(preR.next == null) {
-					preL.next = l;//connect preL and l
-					break;//right sublist list is null, attention, it is a break not a continue
-				}
-				
-				ListNode r = preR.next;//right sublist's head
-				preR.next = null;//cut off the right sublist
-				
-				ListNode t = skipKNodes(r,subLength-1);//tail of right sublist
-				ListNode postT = t.next;//node after right sublist, might be null
-				t.next = null;
-				
-				t = (t.val > preR.val) ? t:preR;//record merged list's tail 
-				
-				preL.next = merge(l,r);
-				t.next = postT;				
-				preL = t;	
+				leftTail.next = null;//disconnect left sublist and right sublist
+				rightTail.next = null;//disconnect right sublist and next sublist
+							
+				//assign merged tail be the larger of two sublist
+				//if leftTail.val == rightTail.val, according to merge method, the mergedTail = rightTail.
+				ListNode mergedTail = (leftTail.val < rightTail.val) ? rightTail:leftTail;
+				preTail.next = merge(leftHead,rightHead);//merge two lists and connect to previous list
+			
+				mergedTail.next = postHead;//connect merged sublist with next list
+								
+				preTail = mergedTail;//set new previous list's tail
+				leftHead = preTail.next;//set new left list's head
 			}
-			subLength *= 2;
+			subListLength *= 2;//sublist's length * 2
 		}
-		return dummyHead.next;
+		return dummyHead.next;//return sorted head
+			
 	}
-	private ListNode merge(ListNode a, ListNode b){
+	private ListNode merge(ListNode a, ListNode b){//merge two sorted list
 		ListNode dummyHead = new ListNode(0);
 		ListNode tail = dummyHead;
-		while(a != null || b != null){
-			if(a == null){
-				tail.next = b;
-				b = b.next;
-			}
-			else if(b == null){
-				tail.next = a; 
-				a = a.next;
-			}
-			else if(a.val < b.val){
+		while(a != null && b != null){
+			if(a.val < b.val){
 				tail.next = a;
 				a = a.next;
 			}
@@ -60,17 +51,15 @@ public class SortList {
 			}
 			tail = tail.next;
 		}
+		tail.next = (a != null)? a:b;
 		return dummyHead.next;
 	}
-	
-	
-	private ListNode skipKNodes(ListNode l, int k){
-		int count = 0;
-		while(l.next != null && count < k){
-			count++;
-			l = l.next;
+	private ListNode skipKNodes(ListNode n, int k){//skip k nodes from node n, return a non-null node
+		while(n != null && n.next != null && k > 0){
+			k--;
+			n = n.next;
 		}
-		return l;		
+		return n;
 	}
 	private int length(ListNode head){
 		 int length = 0;
@@ -79,20 +68,16 @@ public class SortList {
 			 head= head.next;
 		 }
 		 return length;		 
-	 }
+   }
 	
 	public static void main(String[] args){
 		int[] A = new int[]{1,3,3,1,3,1,3,3,2,3,2,2,1,1,1,3,2,2,1,1,2,2,2,3,3,1,1,2,2,2,1,2,1,1,2,3,3,2,2,3,2,3,2,2,2,1,1,3,2,3,3,1,1,1,2,2,1,2,2,2,2,3,1,3,1,1,1,2,1,2,2,2,1,3,2,2,2,3,3,2,3,3,1,1,2,2,1,2,1,3,2,1,3,3,1,2,1,1,1,1,1,2,1,2,2,2,2,3,3,3,1,1,3,2,1,1,2,1,3,3,2,2,1,3,1,3,1,3,2,2,3,2,3,2,2,1,2,3,1,3,1,2,3,3,2,3,3,3,1,1,2,3,1,2,3,2,1,1,2,3,1,1,3,1,2,2,3,2,1,3,1,2,1,3,2,1,1,2,2,2,1,3,1,3,2,3,3,1,1,3,1,2,1,2,3,1,2,1,1,3,1,3,3,1,1,1,2,2,1,3,1,2,2,3,2,1,3,2,1,3,2,2,3,3,2,2,1,3,2,2,2,2,2,3,2,2,3,1,3,2,1,3,2,1,2,3,3,3,1,2,2,3,1,1,2,2,3,2,1,1,1,1,1,3,2,2,2,1,3,2,1,2,3,2,1,1,2,1,3,3,1,3,1,2,2,1,2,3,2,3,3,1,2,3,2,2,3,3,2,1,3,2,2,2,3,3,3,1,1,2,1,1,2,3,3,3,1,3,2,2,1,2,2,1,2,3,1,3,2,2,3,3,3,1,2,3,2,1,3,1,1,2,2,1,1,1,2,2,3,1,3,1,2,3,3,3,2,2,3,1,1,1,3,2,1,1,3,1,2,3,3,3,2,1,2,3,2,3,2,1,3,2,2,2,2,1,1,3,1,1,1,3,2,2,2,1,2,3,2,3,2,2,1,2,3,2,1,1,3,1,3,3,1,1,1,1,1,2,3,3,3,1,3,2,2,3,1,1,3,1,1,1,3,1,1,2,2,2,1,1,1,1,2,1,3,3,3,1,2,2,2,2,3,3,1,2,2,3,1,3,1,2,1,2,2,3,3,1,3,3,2,1,3,1,1,3,1,2,3,3,3,3,1,1,3,3,3,3,2,2,2,1,1,3,2,2,2,3,1,3,3,3,1,1,3,1,3,2,3,1,2,3,2,2,3,3,3,1,2,1,2,1,2,3,1,2,2,2,1,1,1,2,2,1,2,1,1,1,3,2,1,2,3,2,2,2,1,2,3,2,2,1,3,3,3,1,2,3,3,1,1,3,3,1,1,2,1};
-//		int[] A = new int[]{3,1,2};
 //		int[] A = new int[]{6,5,4,3,2,1};
 		ListNode head = new ListNode().createList(A);
 		
 		SortList sortList = new SortList();
-		
 		ListNode sorted = sortList.sortList(head);
 		sortList.print(sorted);
-
-
 	}
 	 private void print(ListNode head){
 	    	while(head != null){
@@ -101,6 +86,4 @@ public class SortList {
 	    	}
 	    	System.out.println();
 	    }
-	
-
 }
